@@ -2,45 +2,46 @@ const LANGUAGE = 'en';
 
 const MESSAGES = require('./calculator_messages.json');
 
-function messages(message, lang='en') {
+function messages(message, lang) {
   return MESSAGES[lang][message];
 }
 
 let rlSync = require('readline-sync');
 
-function prompt (msg) {
-  console.log(`=> ${msg}`)
+function prompt (key) {
+  let message = messages(key, LANGUAGE);
+  console.log(`=> ${message}`);
 }
 
 function invalidNumber(num) {
   return num.trimStart() === '' || Number.isNaN(Number(num));
 }
 
-prompt(messages('welcome'));
+prompt('welcome');
 
 while (true) {
 
-prompt(messages('firstNumber'));
+prompt('firstNumber');
 let num1 = rlSync.question();
 
 while (invalidNumber(num1)) {
-  prompt(messages('invalidNumber'));
+  prompt('invalidNumber');
   num1 = rlSync.question();
 }
 
-prompt(messages('secondNumber'));
+prompt('secondNumber');
 let num2 = rlSync.question();
 
 while (invalidNumber(num2)) {
-  prompt(messages('invalidNumber'));
+  prompt('invalidNumber');
   num2 = rlSync.question();
 }
 
-prompt(messages('operation'));
+prompt('operation');
 let operation = rlSync.question();
 
 while (!['1', '2', '3', '4'].includes(operation)) {
-  prompt(messages('invalidOperation'));
+  prompt('invalidOperation');
   operation = rlSync.question();
 }
 
@@ -62,9 +63,9 @@ switch (operation) {
   default:
 }
 
-prompt(`The result is: ${output}`);
+console.log(`=> The result is: ${output}`);
 
-prompt(messages('continueOrNot'));
+prompt('continueOrNot');
 let continueOrDiscontinue = rlSync.question();
 
 if (continueOrDiscontinue[0].toLowerCase() !== 'y') break;
