@@ -10,6 +10,8 @@ function invalidNumber(num) {
 
 prompt('Welcome to the Calculator!');
 
+while (true) {
+
 prompt("What's the first number?");
 let num1 = rlSync.question();
 
@@ -34,6 +36,7 @@ while (!['1', '2', '3', '4'].includes(operation)) {
   operation = rlSync.question();
 }
 
+
 let output;
 switch (operation) {
   case '1': 
@@ -52,3 +55,9 @@ switch (operation) {
 }
 
 prompt(`The result is: ${output}`);
+
+prompt("Would you like to perform another calculation? Enter 'y' for yes and 'n' for no.");
+let continueOrDiscontinue = rlSync.question();
+
+if (continueOrDiscontinue[0].toLowerCase() !== 'y') break;
+}
