@@ -5,6 +5,17 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
+function choiceShortcut (string) {
+  switch (string) {
+    case 'r': return 'rock';
+    case 'p': return 'paper';
+    case 'sc': return 'scissors';
+    case 'sp': return 'spock';
+    case 'l': return 'lizard';
+    default: return string;
+  }
+}
+
 function displayWinner(choice, computerChoice) {
   prompt(`You chose ${choice}, the computer chose ${computerChoice}.`);
 
@@ -37,12 +48,14 @@ if ((choice === 'rock' && computerChoice === 'scissors') ||
 
 while (true) {
 
-prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
+prompt(`Choose one: ${VALID_CHOICES.join(', ')} (can enter only first letter for shortcut, only first two letters for spock and scissors)`);
 let choice = readline.question();
+choice = choiceShortcut(choice);
 
 while (!VALID_CHOICES.includes(choice)) {
   prompt("That's not a valid choice.");
   choice = readline.question();
+  choice = choiceShortcut(choice);
 }
 
 let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
