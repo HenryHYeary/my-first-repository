@@ -1,5 +1,14 @@
 const readline = require('readline-sync');
+
 const VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
+
+const WINNING_COMBOS = {
+  rock: ['scissors', 'lizard'],
+  paper: ['rock', 'spock'],
+  scissors: ['paper', 'lizard'],
+  spock: ['scissors', 'rock'],
+  lizard: ['spock', 'paper'],
+}
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -16,32 +25,18 @@ function choiceShortcut (string) {
   }
 }
 
+function playerWinsGame(choice, computerChoice) {
+  return WINNING_COMBOS[choice].includes(computerChoice);
+}
+
 function displayWinner(choice, computerChoice) {
   prompt(`You chose ${choice}, the computer chose ${computerChoice}.`);
-  if ((choice === 'rock' && computerChoice === 'scissors') ||
-    (choice === 'rock' && computerChoice === 'lizard') ||
-    (choice === 'scissors' && computerChoice === 'lizard') ||
-    (choice === 'lizard' && computerChoice === 'paper') ||
-    (choice === 'lizard' && computerChoice === 'spock') ||
-    (choice === 'paper' && computerChoice === 'spock') ||
-    (choice === 'spock' && computerChoice === 'rock') ||
-    (choice === 'spock' && computerChoice === 'scissors') ||
-    (choice === 'paper' && computerChoice === 'rock') ||
-    (choice === 'scissors' && computerChoice === 'paper')) {
+  if (playerWinsGame(choice, computerChoice)) {
   prompt('You win!');
-  } else if ((choice === 'rock' && computerChoice === 'paper') ||
-    (choice === 'lizard' && computerChoice === 'scissors') ||
-    (choice === 'lizard' && computerChoice === 'rock') ||
-    (choice === 'spock' && computerChoice === 'paper') ||
-    (choice === 'spock' && computerChoice === 'lizard') ||
-    (choice === 'paper' && computerChoice === 'lizard') ||
-    (choice === 'scissors' && computerChoice === 'spock') ||
-    (choice === 'rock' && computerChoice === 'spock') ||
-    (choice === 'paper' && computerChoice === 'scissors') ||
-    (choice === 'scissors' && computerChoice === 'rock')) {
+  } else if (choice === computerChoice) {
+    prompt("It's a tie!");
+  } else {
   prompt('Computer wins!');
-    } else {
-  prompt("It's a tie!");
   }
 }
 
@@ -49,26 +44,11 @@ let playerWins = 0;
 let computerWins = 0;
 
 function incrementResult(choice, computerChoice) {
-  if ((choice === 'rock' && computerChoice === 'scissors') ||
-    (choice === 'rock' && computerChoice === 'lizard') ||
-    (choice === 'scissors' && computerChoice === 'lizard') ||
-    (choice === 'lizard' && computerChoice === 'paper') ||
-    (choice === 'lizard' && computerChoice === 'spock') ||
-    (choice === 'paper' && computerChoice === 'spock') ||
-    (choice === 'spock' && computerChoice === 'rock') ||
-    (choice === 'spock' && computerChoice === 'scissors') ||
-    (choice === 'paper' && computerChoice === 'rock') ||
-    (choice === 'scissors' && computerChoice === 'paper')) {
+  if (playerWinsGame(choice, computerChoice)) {
   return playerWins++;
-  } else if ((choice === 'lizard' && computerChoice === 'scissors') ||
-    (choice === 'lizard' && computerChoice === 'rock') ||
-    (choice === 'spock' && computerChoice === 'paper') ||
-    (choice === 'spock' && computerChoice === 'lizard') ||
-    (choice === 'paper' && computerChoice === 'lizard') ||
-    (choice === 'scissors' && computerChoice === 'spock') ||
-    (choice === 'rock' && computerChoice === 'spock') ||
-    (choice === 'paper' && computerChoice === 'scissors') ||
-    (choice === 'scissors' && computerChoice === 'rock')) {
+  } else if (choice === computerChoice){
+    choice = choice; 
+  } else {
   return computerWins++;
   }
 }
