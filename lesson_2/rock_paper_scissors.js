@@ -74,14 +74,14 @@ while (true) {
 
   if (playerWins === 3) {
     prompt('You are the grand winner!');
-    return playerWins = 0;
-    return computerWins = 0;
+    playerWins = 0;
+    computerWins = 0;
   }
 
   if (computerWins === 3) {
     prompt('The computer is the grand winner!');
-    return playerWins = 0;
-    return computerWins = 0;
+    playerWins = 0;
+    computerWins = 0;
   }
 
   prompt('Would you like to play again? "y" for yes, "n" for no.');
