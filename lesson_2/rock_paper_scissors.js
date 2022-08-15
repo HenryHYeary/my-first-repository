@@ -2,6 +2,8 @@ const readline = require('readline-sync');
 
 const VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
 
+const WINNING_NUMBER = 3;
+
 const WINNING_COMBOS = {
   rock: ['scissors', 'lizard'],
   paper: ['rock', 'spock'],
@@ -45,11 +47,9 @@ let computerWins = 0;
 
 function incrementResult(choice, computerChoice) {
   if (playerWinsGame(choice, computerChoice)) {
-  return playerWins++;
-  } else if (choice === computerChoice){
-    choice = choice; 
+    return playerWins++;
   } else {
-  return computerWins++;
+    return computerWins++;
   }
 }
 
@@ -72,13 +72,13 @@ while (true) {
 
   incrementResult(choice, computerChoice);
 
-  if (playerWins === 3) {
+  if (playerWins === WINNING_NUMBER) {
     prompt('You are the grand winner!');
     playerWins = 0;
     computerWins = 0;
   }
 
-  if (computerWins === 3) {
+  if (computerWins === WINNING_NUMBER) {
     prompt('The computer is the grand winner!');
     playerWins = 0;
     computerWins = 0;
