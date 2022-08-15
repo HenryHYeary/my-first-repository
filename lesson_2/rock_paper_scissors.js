@@ -10,7 +10,7 @@ const WINNING_COMBOS = {
   scissors: ['paper', 'lizard'],
   spock: ['scissors', 'rock'],
   lizard: ['spock', 'paper'],
-}
+};
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -34,11 +34,11 @@ function playerWinsGame(choice, computerChoice) {
 function displayWinner(choice, computerChoice) {
   prompt(`You chose ${choice}, the computer chose ${computerChoice}.`);
   if (playerWinsGame(choice, computerChoice)) {
-  prompt('You win!');
+    prompt('You win!');
   } else if (choice === computerChoice) {
     prompt("It's a tie!");
   } else {
-  prompt('Computer wins!');
+    prompt('Computer wins!');
   }
 }
 
@@ -85,10 +85,10 @@ while (true) {
   }
 
   prompt('Would you like to play again? "y" for yes, "n" for no.');
-  answer = readline.question().toLowerCase();
-  
+  let answer = readline.question().toLowerCase();
+
   while (answer[0] !== 'n' && answer[0] !== 'y') {
-    prompt('Please enter "y" or "n".')
+    prompt('Please enter "y" or "n".');
     answer = readline.question().toLowerCase();
   }
 
