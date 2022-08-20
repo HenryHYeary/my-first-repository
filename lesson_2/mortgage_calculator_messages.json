@@ -1,8 +1,0 @@
-{
-  "welcome": "Welcome to the mortgage calculator!",
-  "loanAmount": "What is the loan amount in USD?",
-  "invalidNumber": "Invalid number, please try again.",
-  "annualPercentageRate": "What is the Annual Percentage Rate (APR)? (please enter an integer)",
-  "loanDurationMonths": "What is the loan duration in months?",
-  "continueOrNot": "Would you like to perform another calculation? Enter 'y' for yes and 'n' for no."
-}
