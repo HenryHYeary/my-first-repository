@@ -55,3 +55,26 @@ console.log(totalAges);
 
 console.log(ageValues.reduce((sumAges, currentAge) => sumAges + currentAge, 0));
 
+console.log(Math.min(...ageValues));
+
+let statement = "The Flintstones Rock";
+
+let charsInStatement = statement.split('').filter(char => char !== ' ');
+let result2 = {};
+
+charsInStatement.forEach(char => {
+  result2[char] = result2[char] || 0;
+  result2[char]++;
+});
+
+console.log(result2);
+
+// Alternative code to the last problem
+ charsInStatement.forEach(char => {
+  if (Object.keys(result).includes(char)) {
+    result[char] += 1;
+  } else {
+    result[char] = 1;
+  }
+});
+
