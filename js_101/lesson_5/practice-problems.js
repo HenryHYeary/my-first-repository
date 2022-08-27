@@ -131,3 +131,22 @@ let arr6 = [[2], [3, 5, 7], [9], [11, 15, 18]];
 console.log(arr6.map(subArr => {
   return subArr.filter(num => num % 3 === 0);
 }));
+
+let arr7 = [[1, 6, 7], [1, 5, 3], [1, 8, 3]];
+
+console.log(arr7.sort((a, b) => {
+  let oddSumA = a.filter(num => num % 2 === 1).reduce((sum, next) => sum + next);
+  let oddSumB = b.filter(num => num % 2 === 1).reduce((sum, next) => sum + next);
+ 
+
+  return oddSumA - oddSumB;
+}));
+
+let obj3 = {
+  grape: { type: 'fruit', colors: ['red', 'green'], size: 'small'},
+  carrot: { type: 'vegetable', colors: ['orange'], size: 'medium'},
+  apple: { type: 'fruit', colors: ['red', 'green'], size: 'medium'},
+  apricot: { type: 'fruit', colors: ['orange'], size: 'medium'},
+  marrow: { type: 'vegatable', colors: ['green'], size: 'large'},
+};
+
