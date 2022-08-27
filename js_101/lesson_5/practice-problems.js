@@ -103,3 +103,31 @@ Object.values(obj).forEach(arr => {
     });
   });
 });
+
+let arr4 = [['b', 'c', 'a'], [2, 11, -3], ['blue', 'black', 'green']];
+
+console.log(arr4.map(subArr => {
+  if (typeof subArr[0] === 'string') {
+    return subArr.slice().sort();
+  } else {
+    return subArr.slice().sort((a, b) => a - b);
+  }
+}));
+
+let arr5 = [{ a: 1 }, { b: 2, c: 3 }, { d: 4, e: 5, f: 6 }];
+
+console.log(arr5.map(obj => {
+  incrementedObj = {};
+
+  for (let key in obj) {
+    incrementedObj = obj[key] + 1;
+  }
+
+  return incrementedObj;
+}));
+
+let arr6 = [[2], [3, 5, 7], [9], [11, 15, 18]];
+
+console.log(arr6.map(subArr => {
+  return subArr.filter(num => num % 3 === 0);
+}));
