@@ -1,27 +1,37 @@
-function findFibonacciIndexByLength (numOfDigits) {
+// input : number of digits contained by target fib number
+// output : index of target fib number matching number of digits
+
+// Examples include n appended on to each number to use BigInt integers
+// Examples are boolean statements that should match the output
+
+// need several variables to add to each other to make sure we can execute fibonacci math
+// should keep track of the index we are on with an incrementing counter
+// should use BigInt integers within function to make sure we can verify these test cases
+// we can assume argument is always >= 2
+
+// should use an iterative loop that uses variable reassignment to make sure we keep a track of the total fib number
+// should return counter not actual fib number
+// use do while as you want to add two independent digits irrespective of their index
+// Can easily use string length of fibonacci number to verify whether it has meth the length of the specified number of digits or not
+// should reassign first value to second value and second to fib to make sure the total fib number is continuously being added to as well as keeping track of prev num in each iteration
+
+
+function findFibonacciIndexByLength(numOfDigits) {
   let first = 1n;
   let second = 1n;
-  let count = 2n;
-  let fibonnaci;
+  let counter = 2n;
+  let fibonacci;
 
   do {
-    fibonnaci = first + second;
-    count += 1n;
+    fibonacci = first + second;
+    counter += 1n;
     first = second;
-    second = fibonnaci;
-  } while (String(fibonnaci).length < numOfDigits);
+    second = fibonacci;
+  } while (String(fibonacci).length < numOfDigits);
 
-  return count;
+  return counter;
 }
 
-console.log(findFibonacciIndexByLength(2n) === 7n);    
-console.log(findFibonacciIndexByLength(10000n) === 47847n);
-
-// input: number of digits contained in number
-// output: index of the number at which that number of digits first appears
-
-// data structures: need to create variables for separate parts of fib sequence
-// algorithm: call an iteration method that will add the sum of the  previous two digits to return the next digit in the series
-// THEN determine the index of the number where the num of digits first appears (can convert number to a string and determine digit length by string length)
-// Above should be the result of the function
-// Iteration should terminate when number of digits has been reached
+console.log(findFibonacciIndexByLength(2n));
+console.log(findFibonacciIndexByLength(3n));
+console.log(findFibonacciIndexByLength(10n));
