@@ -1,22 +1,23 @@
-function triangle(sideLength) {
-  let spaces = sideLength - 1;
+
+// input: n number of stars that sides of triangle should be equal to
+// output: triangle with number of stars on each side comprised of blank spaces and stars
+// Examples: hypotenuse should always be facing left, total number of stars will increment by one for each line printed
+// Data: should use repeat method in conjunction with console.log() to avoid the need of of creating an empty string variable and logging it every line.
+// Can keep track of total number of stars and spaces needed with seperate variables, should also decrease height on each iteration
+// Algorithm: stars variable should start at one, blank spaces variable should start at height minus one,
+// use do while to make sure lines keep logging until the length is decremented to zero
+
+function triangle (length) {
   let stars = 1;
-  while (sideLength > 0) {
+  let spaces = length - 1;
+
+  do {
     console.log(`${' '.repeat(spaces)}${'*'.repeat(stars)}`);
-    spaces -= 1;
-    stars += 1;
-    sideLength -= 1;
-  }  
+    stars ++;
+    spaces --;
+    length --;
+  } while (length > 0);
 }
 
-
 triangle(5);
-
-// create a right triangle with sides equal to the input
-// input: length of sides in asterisks
-// output: triangle formed by asterisks with side lengths equal to input
-
-// data structures: strings, and output will be a set of strings as well.
-// algorithm: Need to use an iterative method to make sure a string with blank spaces is created totaling the number specified -1 with an asterisk on the end
-// subsequent lines will put one more asterisk on the line from  their position relative to the end until one whole line of asterisks is made.
-// use console.log() to output the full triangle with each line of asterisks.
+triangle(9);
