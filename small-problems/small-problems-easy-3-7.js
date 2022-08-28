@@ -1,3 +1,9 @@
+// input: integer
+// output: integer (either the same integer or doubled)
+
+// Examples: numbers must strictly read the same forwards and backwards for the same number to be returned
+// Data types: Could convert the original integer into two substrings at the halfway point index and then compare them to make sure they are strictly equal.
+// Algorithm: should use an if statement that depends on whether or not the comparison substrings are equal to determine the return value.
 
 function twice (number) {
   let stringLength = String(number).length
