@@ -13,12 +13,10 @@ let objValues = Object.values(obj);
 
 let newArr = objValues.map(attributes => {
   if (attributes['type'] === 'fruit') {
-    return attributes['colors'].map(char => capitalize(char));
-  } else {
+    return attributes['colors'].map(color => capitalize(color));
+  } else if (attributes['type'] === 'vegetable') {
     return attributes['size'].toUpperCase();
   }
 });
 
 console.log(newArr);
-
-
