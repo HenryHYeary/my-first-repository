@@ -37,6 +37,21 @@ function prompt(msg) {
   console.log(`=> ${msg}`);
 }
 
+function joinOr(arr, delimiter = ', ', conjunction = 'or') {
+  switch(arr.length) {
+    case 0:
+      return '';
+    case 1:
+      return arr.join();
+    case 2:
+      return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
+    default: 
+      let joinedString = arr.join(delimiter);
+      let finalElement = String(arr[arr.length - 1]);
+      return `${joinedString.substring(0, joinedString.length - 2)} ${conjunction} ${finalElement}`
+  }
+}
+
 function emptySquares(board) {
   return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
 }
@@ -53,7 +68,7 @@ function playerChoosesSquare(board) {
   let square;
   
   while (true) {
-    prompt(`Choose a square: ${emptySquares(board).join(', ')}:`);
+    prompt(`Choose a square: ${joinOr(emptySquares(board))}:`);
     square = readline.question().trim();
     if (emptySquares(board).includes(square)) break;
 
