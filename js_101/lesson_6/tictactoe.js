@@ -2,6 +2,7 @@ const readline = require('readline-sync');
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
+const MATCH_WIN = 5;
 
 function displayBoard(board) {
   console.clear();
@@ -135,13 +136,41 @@ while (true) {
   
   if (someoneWon(board)) {
     prompt(`${detectWinner(board)} won!`);
-  } else {
+    } else {
     prompt("It's a tie!");
   }
 
+  
   prompt('Play again? (y or n)');
   let answer = readline.question().toLowerCase()[0];
   if (answer !== 'y') break;
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
+
+// Possibly helpful code for keeping track of wins in a FT5 format?
+
+/*
+let totalPlayerWins = 0;
+let totalComputerWins = 0;
+
+    if (detectWinner(board) === 'Player') {
+      totalPlayerWins += 1;
+      prompt(`Player has won ${totalPlayerWins} games, Computer has won ${totalComputerWins} games.`);
+    
+      if (totalPlayerWins === MATCH_WIN) {
+        prompt(`Player has won the match!`)
+        totalPlayerWins = 0;
+        totalComputerWins = 0;
+      }
+    } else if (detectWinner(board) === 'Computer') {
+      totalComputerWins += 1;
+      prompt(`Player has won ${totalPlayerWins} games, Computer has won ${totalComputerWins} games.`)
+    
+      if (totalComputerWins === MATCH_WIN) {
+        prompt('Computer has won the match!')
+        totalPlayerWins = 0;
+        totalComputerWins = 0;
+      }
+    }
+*/
