@@ -18,17 +18,19 @@ function wordSizes(sentence) {
   for (let i = 0; i < wordsArray.length; i++) {
     let wordSize = wordsArray[i].length;
 
-    if (wordSize === 0) {
-      continue;
-    }
+    if (wordSize === 0) continue;
 
     if (!count[wordSize]) {
       count[wordSize] = 0;
     }
-    count[wordSize] +=1;
+
+    count[wordSize] ++;
   }
 
   return count;
 }
 
 console.log(wordSizes('Four score and seven.'));
+console.log(wordSizes('Hey diddle diddle, the cat and the fiddle!'));
+console.log(wordSizes("What's up doc?"));
+console.log(wordSizes(''));
