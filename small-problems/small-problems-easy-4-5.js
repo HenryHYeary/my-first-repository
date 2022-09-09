@@ -1,18 +1,28 @@
 
-function cleanUp(text) {
-  return text.replace(/[^a-z0-9]/gi, '');
+function isPalindrome(string) {
+  return string.split('').reverse().join('') === string;
 }
 
+
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+let DIGITS = '1234567890';
+
+function removeNonLetterNumberSpaces(string) {
+  let cleanString = '';
+
+  for (let i = 0; i < string.length; i++) {
+    if (ALPHABET.includes(string[i]) || ALPHABET.toUpperCase().includes(string[i])) {
+      cleanString += string[i];
+    } else if (DIGITS.includes(string[i])) {
+      cleanString += string[i];
+    }
+  }
+
+  return cleanString;
+}
 
 function isRealPalindrome(string) {
-  let analysisString = cleanUp(string).toLowerCase();
+  let cleanString = removeNonLetterNumberSpaces(string.toLowerCase());
 
-  return analysisString === analysisString.split('').reverse().join('');
+  return isPalindrome(cleanString);
 }
-
-console.log(isRealPalindrome('madam'));
-console.log(isRealPalindrome('Madam'));
-console.log(isRealPalindrome("Madam, I'm Adam"));
-console.log(isRealPalindrome('356653'));
-console.log(isRealPalindrome('356a653'));
-console.log(isRealPalindrome('123ab321'));
