@@ -7,15 +7,15 @@ const MAX_DEGREES = 360;
 
 function dms(degreesFloat) {
   let timesThrough = 1;
-  for (let i = 0; i < Math.abs(degreesFloat); i++) {
-    if (i > MAX_DEGREES) {
-      timesThrough++; // logic needs work here, how to reset it back to zero with the loop continuing normally.
-    }
+  
+  if (Math.abs(degreesFloat) > MAX_DEGREES) {
+    timesThrough++; // logic needs work here, how to deal with multiples of 360;
   }
+  
   if(degreesFloat < 0 ){
     degreesFloat = degreesFloat + (MAX_DEGREES * timesThrough);
   } else if (degreesFloat > MAX_DEGREES) {
-    degreesFloat = degreesFloat - (MAX_DEGREES * timesThrough);
+    degreesFloat = degreesFloat - (MAX_DEGREES * (timesThrough - 1));
   }
 
   let degreesInt = Math.floor(degreesFloat);
