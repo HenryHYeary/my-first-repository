@@ -6,10 +6,11 @@ const SECONDS_PER_DEGREE = MINUTES_PER_DEGREE * SECONDS_PER_MINUTE;
 const MAX_DEGREES = 360;
 
 function dms(degreesFloat) {
-  let timesThrough = 1;
-  
-  if (Math.abs(degreesFloat) > MAX_DEGREES) {
-    timesThrough++; // logic needs work here, how to deal with multiples of 360;
+  let timesThrough = 0;
+  for (let i = 0; i < Math.abs(degreesFloat); i++) {
+    if (i % MAX_DEGREES === 0) {
+      timesThrough++;
+    }
   }
   
   if(degreesFloat < 0 ){
