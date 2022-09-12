@@ -4,6 +4,9 @@ const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MATCH_WIN = 5;
 
+let playerWinCount = 0;
+let computerWinCount = 0;
+
 function displayBoard(board) {
   console.clear();
 
@@ -61,9 +64,6 @@ function boardFull(board) {
   return emptySquares(board).length === 0;
 }
 
-function someoneWon(board) {
-  return false;
-}
 
 function playerChoosesSquare(board) {
   let square;
@@ -94,7 +94,7 @@ function detectWinner(board) {
   let winningLines = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
     [1, 4, 7], [2, 5, 8], [3, 6, 9],
-    [1, 5, 7], [3, 5, 7]
+    [1, 5, 9], [3, 5, 7]
   ];
 
   for (let i = 0; i < winningLines.length; i++) {
@@ -116,6 +116,24 @@ function detectWinner(board) {
   }
 
   return null;
+}
+
+function winCount(board) {
+  let winner = detectWinner(board);
+
+  if (winner === 'Player') {
+    playerWinCount += 1;
+  } else if (winner === 'Computer') {
+    computerWinCount += 1;
+  }
+
+  if (playerWinCount < MATCH_WIN && computerWinCount < MATCH_WIN) {
+    console.log(`Player has won ${playerWinCount} matches. Computer has won ${computerWinCount} matches.`);
+  } else {
+    console.log(`${winner} has won the match! Resetting scores.`);
+    playerWinCount = 0;
+    computerWinCount = 0;
+  }
 }
 
 while (true) {
@@ -140,37 +158,11 @@ while (true) {
     prompt("It's a tie!");
   }
 
-  
+  winCount(board);
+
   prompt('Play again? (y or n)');
   let answer = readline.question().toLowerCase()[0];
   if (answer !== 'y') break;
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
-
-// Possibly helpful code for keeping track of wins in a FT5 format?
-
-/*
-let totalPlayerWins = 0;
-let totalComputerWins = 0;
-
-    if (detectWinner(board) === 'Player') {
-      totalPlayerWins += 1;
-      prompt(`Player has won ${totalPlayerWins} games, Computer has won ${totalComputerWins} games.`);
-    
-      if (totalPlayerWins === MATCH_WIN) {
-        prompt(`Player has won the match!`)
-        totalPlayerWins = 0;
-        totalComputerWins = 0;
-      }
-    } else if (detectWinner(board) === 'Computer') {
-      totalComputerWins += 1;
-      prompt(`Player has won ${totalPlayerWins} games, Computer has won ${totalComputerWins} games.`)
-    
-      if (totalComputerWins === MATCH_WIN) {
-        prompt('Computer has won the match!')
-        totalPlayerWins = 0;
-        totalComputerWins = 0;
-      }
-    }
-*/
