@@ -56,4 +56,32 @@ console.log(staggeredCase('ignore 777 the 444 numbers', false));
 
 
 
-// needs some work, will cut off when the only alphabetical length is done iterating.
+// Alternate solution
+
+function staggeredCase2(string, onlyCharCount = true) {
+  let needsCap = true;
+
+  if (onlyCharCount === true) {
+    return string.split('').map(char => {
+      if (char.toLowerCase() >= 'a' && char.toLowerCase() <= 'z') {
+        if (needsCap === true) {
+          needsCap = false;
+          return char.toUpperCase();
+        } else {
+          needsCap = true;
+          return char.toLowerCase();
+        }
+      } else {
+        return char;
+      }
+    }).join('');
+  } else {
+    return string.split('').map((char, index) => {
+      if (index % 2 === 0) {
+        return char.toUpperCase();
+      } else {
+        return char.toLowerCase();
+      }
+    }).join('');
+  }
+}
