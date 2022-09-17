@@ -22,9 +22,27 @@ function rotateRightmostDigits(number, count) {
   return Number(newString);
 }
 
+
 console.log(rotateRightmostDigits(735291, 1));
 console.log(rotateRightmostDigits(735291, 2));
 console.log(rotateRightmostDigits(735291, 3));
 console.log(rotateRightmostDigits(735291, 4));
 console.log(rotateRightmostDigits(735291, 5));
 console.log(rotateRightmostDigits(735291, 6));
+
+
+function rotateRightmostDigits2(number, count) {
+  let stringNum = String(number);
+  let firstSlice = stringNum.slice(0, stringNum.length - count);
+  let targetDigit = stringNum[stringNum.length - count];
+  let finalSlice = stringNum.slice(stringNum.length - count + 1);
+
+  return Number(`${firstSlice}${finalSlice}${targetDigit}`);
+}
+
+console.log(rotateRightmostDigits2(735291, 1));
+console.log(rotateRightmostDigits2(735291, 2));
+console.log(rotateRightmostDigits2(735291, 3));
+console.log(rotateRightmostDigits2(735291, 4));
+console.log(rotateRightmostDigits2(735291, 5));
+console.log(rotateRightmostDigits2(735291, 6));

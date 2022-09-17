@@ -1,11 +1,24 @@
+/*
+input: an integer
+output: the maximum rotation of the digits of the original number.
 
+Examples: If only one digit is passed to the function then it should return that digit.
+If the function results in a leading zero then that zero should be dropped from the return value.
+
+Data Structure: should coerce the number into a string so we can iterate over the string and rotate each element
+while keeping the others in place.
+
+Algorithm: Should use the solution from the previous exercise, the first digit to rotate's index will match the length of the 
+stringNum version of the number. So subtract the index from string.length to form the count argument, and use a current iteration number
+that constantly reassigns itself every iteration through the loop.
+*/
 
 function maxRotation(number) {
   let stringNum = String(number);
   let currentIterationNumber = number;
 
-  for (let i = 1; i <= stringNum.length; i++) {
-    currentIterationNumber = rotateRightmostDigits(currentIterationNumber, i);
+  for (let i = 0; i < stringNum.length; i++) {
+    currentIterationNumber = rotateRightmostDigits(currentIterationNumber, stringNum.length - i);
   }
 
   return currentIterationNumber;
@@ -13,16 +26,15 @@ function maxRotation(number) {
 
 function rotateRightmostDigits(number, count) {
   let stringNum = String(number);
-  let indexToSeparate = stringNum.length - count;
-  let digitToMove = stringNum[indexToSeparate];
-  let newString = stringNum.replace(digitToMove, '');
+  let firstSlice = stringNum.slice(0, stringNum.length - count);
+  let targetDigit = stringNum[stringNum.length - count];
+  let finalSlice = stringNum.slice(stringNum.length - count + 1);
 
-  newString += digitToMove;
-
-  return Number(newString);
+  return Number(`${firstSlice}${finalSlice}${targetDigit}`);
 }
 
 console.log(maxRotation(735291));
-
-// should try to go through the full PEDAC process on this one, figuring out how to
-// keeping all of the digits in place during the rotation will be a key part of the solution.
+console.log(maxRotation(3));
+console.log(maxRotation(35));
+console.log(maxRotation(105));
+console.log(maxRotation(8703529146));
