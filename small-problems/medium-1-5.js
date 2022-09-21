@@ -29,9 +29,9 @@ function wordToDigit(sentence) {
     let analysisWord = word.split('').filter(char => {
       char.toLowerCase();
       return char >= 'a' && char <= 'z';
-    });
+    }).join('');
     if (Object.keys(WORDS_TO_DIGITS).includes(analysisWord)) {
-      return WORDS_TO_DIGITS[word];
+      return WORDS_TO_DIGITS[analysisWord];
     } else {
       return word;
     }
