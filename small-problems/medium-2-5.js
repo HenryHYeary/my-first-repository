@@ -19,7 +19,7 @@ const MAX_FEATURED_NUM = 9876543201;
 function featured(number) {
 
     if (number >= MAX_FEATURED_NUM) {
-        return 'There is no possible number that fulfills those requirements.'
+        return 'There is no possible number that fulfills those requirements.';
     }
 
     do {
