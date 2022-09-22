@@ -17,19 +17,16 @@ Then return the first element of that filtered array.
 const MAX_FEATURED_NUM = 9876543201;
 
 function featured(number) {
-    let featuredArr = [];
 
-    for (let i = 1; i <= MAX_FEATURED_NUM; i++) {
-        if (i % 2 === 0 && i % 7 === 0 && noRepeatDigits(number)) {
-            featuredArr.push(i);
-        }
+    if (number >= MAX_FEATURED_NUM) {
+        return 'There is no possible number that fulfills those requirements.'
     }
 
-    let onlyGreaterThanArr = featuredArr.filter(value => {
-        return value > number;
-    });
+    do {
+        number++
+    } while (!isOddAndMultOf7(number) || !noRepeatDigits(number));
 
-    return onlyGreaterThanArr[0];
+    return number;
 }
 
 function noRepeatDigits(number) {
@@ -47,13 +44,13 @@ function noRepeatDigits(number) {
 
     let countsArr = Object.values(countObj);
 
-    for (let i = 0; i < countsArr.length; i++) {
-        if (countsArr[i] > 1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    return countsArr.every(value => {
+        return value === 1;
+    });
 }
 
-console.log(featured(12));
+function isOddAndMultOf7(number) {
+    return number % 2 === 1 && number % 7 === 0;
+}
+
+console.log(featured(9876543201));
