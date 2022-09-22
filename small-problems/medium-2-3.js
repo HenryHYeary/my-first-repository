@@ -20,7 +20,7 @@ Right if one angle is equal to exactly 90 degrees.
 function triangle(angle1, angle2, angle3) {
     let angleArr = [angle1, angle2, angle3];
 
-    if (angleArr.includes(0) || angleArr.reduce((sum, next) => sum + next) != 180) {
+    if (angleArr.includes(0) || angleArr.reduce((sum, next) => sum + next) !== 180) {
         return 'invalid';
     }
 
