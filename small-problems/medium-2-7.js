@@ -13,17 +13,15 @@ in index for every iteration if that previously indexed value is greater than th
 */
 
 function bubbleSort(arr) {
-    let remainingDigitsToBeSortedCount = arr.length;
+    let remainingDigitsToBeSortedCount = 0
 
     do {
-        let newRemainingDigitsToBeSortedCount = 0
         for (let i = 1; i < arr.length; i++) {
             if (arr[i - 1] > arr[i]) {
                 [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
-                newRemainingDigitsToBeSortedCount = i;
+                remainingDigitsToBeSortedCount = i;
             }
         }
-        remainingDigitsToBeSortedCount = newRemainingDigitsToBeSortedCount;
 
     } while (remainingDigitsToBeSortedCount > 1);
 
@@ -31,4 +29,4 @@ function bubbleSort(arr) {
     return arr;
 }
 
-console.log(bubbleSort([6, 2, 7, 1, 4]));
+console.log(bubbleSort([5, 3]));
