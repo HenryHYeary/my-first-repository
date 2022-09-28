@@ -96,3 +96,20 @@ console.log(longestSentence("To be or not to be! Is that the question?"));
 // To be or not to be!
 //
 // The longest sentence has 6 words.
+
+//secondary and much less verbose solution
+
+function longestSentence2(text) {
+  let sentences = text.match(/\w.*?[.?!]/g);
+  let sentenceAndLength = { text: '', length: 0 };
+
+  sentences.forEach(sentence => {
+    let length = sentence.split(' ').length;
+    if (length > sentenceAndLength.length) {
+      sentenceAndLength = { text: sentence, length: length};
+    }
+  });
+
+  console.log(sentenceAndLength.text);
+  console.log(`\nThe longest sentence has ${sentenceAndLength.length} words.\n`);
+}
