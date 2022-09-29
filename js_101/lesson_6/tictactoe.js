@@ -88,7 +88,7 @@ function findAtRiskSquare(line, board) {
   let markersInLine = line.map(square => board[square]);
 
   if (markersInLine.filter(val => val === HUMAN_MARKER).length === 2) {
-    let unusedSquare = line.find(square => board[square] === ' ');
+    let unusedSquare = line.find(square => board[square] === INITIAL_MARKER);
     if (unusedSquare !== undefined) {
       return unusedSquare;
     }
