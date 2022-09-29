@@ -84,10 +84,10 @@ function playerChoosesSquare(board) {
   board[square] = HUMAN_MARKER;
 }
 
-function findAtRiskSquare(line, board) {
+function findAtRiskSquare(line, board, marker) {
   let markersInLine = line.map(square => board[square]);
 
-  if (markersInLine.filter(val => val === HUMAN_MARKER).length === 2) {
+  if (markersInLine.filter(val => val === marker).length === 2) {
     let unusedSquare = line.find(square => board[square] === INITIAL_MARKER);
     if (unusedSquare !== undefined) {
       return unusedSquare;
@@ -102,8 +102,16 @@ function computerChoosesSquare(board) {
   let square;
   for (let i = 0; i < WINNING_LINES.length; i++) {
     let line = WINNING_LINES[i];
-    square = findAtRiskSquare(line, board)
+    square = findAtRiskSquare(line, board, HUMAN_MARKER);
     if (square) break;
+  }
+
+  if (!square) {
+    for (let i = 0; i < WINNING_LINES.length; i++) {
+      let line = WINNING_LINES[i];
+      square = findAtRiskSquare(line, board, COMPUTER_MARKER);
+      if (square) break;
+    }
   }
   
   if (!square) {
