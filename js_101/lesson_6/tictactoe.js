@@ -3,6 +3,11 @@ const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MATCH_WIN = 5;
+const WINNING_LINES = [
+  [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
+  [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
+  [1, 5, 9], [3, 5, 7]             // diagonals
+];
 
 let playerWinCount = 0;
 let computerWinCount = 0;
@@ -79,9 +84,32 @@ function playerChoosesSquare(board) {
   board[square] = HUMAN_MARKER;
 }
 
+function findAtRiskSquare(line, board) {
+  let markersInLine = line.map(square => board[square]);
+
+  if (markersInLine.filter(val => val === HUMAN_MARKER).length === 2) {
+    let unusedSquare = line.find(square => board[square] === ' ');
+    if (unusedSquare !== undefined) {
+      return unusedSquare;
+    }
+  }
+
+  return null;
+}
+
+
 function computerChoosesSquare(board) {
-  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-  let square = emptySquares(board)[randomIndex];
+  let square;
+  for (let i = 0; i < WINNING_LINES.length; i++) {
+    let line = WINNING_LINES[i];
+    square = findAtRiskSquare(line, board)
+    if (square) break;
+  }
+  
+  if (!square) {
+    let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
+    square = emptySquares(board)[randomIndex];
+  }
 
   board[square] = COMPUTER_MARKER;
 }
@@ -91,14 +119,8 @@ function someoneWon(board) {
 }
 
 function detectWinner(board) {
-  let winningLines = [
-    [1, 2, 3], [4, 5, 6], [7, 8, 9],
-    [1, 4, 7], [2, 5, 8], [3, 6, 9],
-    [1, 5, 9], [3, 5, 7]
-  ];
-
-  for (let i = 0; i < winningLines.length; i++) {
-    let [ sq1, sq2, sq3 ] = winningLines[i];
+  for (let i = 0; i < WINNING_LINES.length; i++) {
+    let [ sq1, sq2, sq3 ] = WINNING_LINES[i];
 
     if (
       board[sq1] === HUMAN_MARKER &&
