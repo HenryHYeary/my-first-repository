@@ -38,3 +38,33 @@ function getRandom (key) {
 
 madlibs('template1');
 madlibs('template2');
+
+//Alternate solution
+
+let template1 = 'The %{adjective} brown %{noun} %{adverb} ' +
+'%{verb} the %{adjective} yellow ' +
+'%{noun}, who %{adverb} %{verb} his ' +
+'%{noun} and looks around. '
+
+let template2 = `The %{noun} %{verb} the %{noun}'s %{noun}. `
+
+
+function madlibs2(template) {
+  const REPLACEMENT_TEXT = {
+    adjective: ['quick', 'lazy', 'sleepy', 'noisy', 'hungry'],
+    noun: ['fox', 'dog', 'head', 'leg', 'tail', 'cat'],
+    verb: ['jumps', 'lifts', 'bites', 'licks', 'pats'],
+    adverb: ['easily', 'lazily', 'noisily', 'excitedly']
+  };
+
+  function replaceText(match) {
+    let key = match.replace(/[^a-z]/g, '');
+    let index = Math.floor(Math.random() * REPLACEMENT_TEXT[key].length);
+
+    return REPLACEMENT_TEXT[key][index];
+  }
+
+  return template.replace(/%{[a-z]+}/g, replaceText);
+}
+
+console.log(madlibs2(template1));
