@@ -44,3 +44,24 @@ console.log(triangle(3, 3, 1.5));
 console.log(triangle(3, 4, 5));
 console.log(triangle(0, 3, 3));
 console.log(triangle(3, 1, 1));
+
+//Alternate solution
+
+function triangle(side1, side2, side3) {
+    let sidesArr = [side1, side2, side3];
+    let perimeter = sidesArr.reduce((sum, next) => sum + next);
+  
+    let longest = Math.max(...sidesArr);
+    let shortest = Math.min(...sidesArr);
+    let middle = perimeter - longest - shortest;
+  
+    if ((sidesArr.some(side => side === 0) || shortest + middle < longest)) {
+      return 'invalid';
+    } else if (sidesArr.every(side => side === longest)) {
+      return 'equilateral';
+    } else if (shortest === middle || longest === middle) {
+      return 'isosceles';
+    } else {
+      return 'scalene';
+    }
+  }
