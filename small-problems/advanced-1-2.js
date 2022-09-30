@@ -43,3 +43,21 @@ function transpose(matrix) {
 
 console.log(transpose(matrix));
 console.log(matrix);
+
+function transpose2(matrix) {
+  let transposed = [];
+
+  for (let rowI = 0; rowI < 3; rowI++) {
+    transposed.push([]);
+  }
+
+  for (let rowI = 0; rowI < 3; rowI++) {
+    for (let colI = 0; colI < 3; colI++) {
+      transposed[colI].push(matrix[rowI][colI]);
+    }
+  }
+
+  return transposed;
+}
+
+console.log(transpose2(matrix));
