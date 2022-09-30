@@ -47,7 +47,7 @@ console.log(triangle(3, 1, 1));
 
 //Alternate solution
 
-function triangle(side1, side2, side3) {
+function triangle2(side1, side2, side3) {
     let sidesArr = [side1, side2, side3];
     let perimeter = sidesArr.reduce((sum, next) => sum + next);
   
