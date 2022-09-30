@@ -18,19 +18,19 @@ Right if one angle is equal to exactly 90 degrees.
 */
 
 function triangle(angle1, angle2, angle3) {
-    let angleArr = [angle1, angle2, angle3];
+  let angleArr = [angle1, angle2, angle3];
 
-    if (angleArr.includes(0) || angleArr.reduce((sum, next) => sum + next) !== 180) {
-        return 'invalid';
-    }
+  if (angleArr.includes(0) || angleArr.reduce((sum, next) => sum + next) !== 180) {
+    return 'invalid';
+  }
 
-    if (angleArr.includes(90)) {
-        return 'right';
-    } else if (Math.max(...angleArr) > 90) {
-        return 'obtuse';
-    } else {
-        return 'acute';
-    }
+  if (angleArr.includes(90)) {
+    return 'right';
+  } else if (Math.max(...angleArr) > 90) {
+      return 'obtuse';
+  } else {
+      return 'acute';
+  }
 }
 
 console.log(triangle(30, 90, 60));
@@ -38,3 +38,18 @@ console.log(triangle(50, 50, 50));
 console.log(triangle(60, 70, 50));
 console.log(triangle(120, 50, 10));
 console.log(triangle(0, 90, 90));
+
+//Alternate solution
+
+function triangle2(ang1, ang2, ang3) {
+  let angleArr = [ang1, ang2, ang3];
+  if (ang1 + ang2 + ang3 !== 180 || angleArr.some(angle => angle <= 0)) {
+    return 'invalid';
+  } else if (angleArr.some(angle => angle === 90)) {
+    return 'right';
+  } else if (angleArr.every(angle => angle < 90)) {
+    return 'acute';
+  } else {
+    return 'obtuse';
+  }
+}
