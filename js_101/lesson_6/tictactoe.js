@@ -3,7 +3,6 @@ const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MATCH_WIN = 5;
-const WHO_GOES_FIRST = 'computer';
 const WINNING_LINES = [
   [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
   [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
@@ -12,6 +11,7 @@ const WINNING_LINES = [
 
 let playerWinCount = 0;
 let computerWinCount = 0;
+let whoGoesFirst = 'choose';
 
 function displayBoard(board) {
   console.clear();
@@ -189,10 +189,23 @@ function alternatePlayer(currentPlayer) {
   }
 }
 
+if (whoGoesFirst === 'choose') {
+  console.log('Welcome to Tic Tac Toe!\nWho would you like to go first, you or the computer?\nValid inputs are player or computer.');
+  let answer = readline.question();
+  if (answer === 'player') {
+    whoGoesFirst = 'player';
+  } else if (answer === 'computer') {
+    whoGoesFirst = 'computer';
+  } else {
+    console.log('Invalid input, please try again.');
+    answer = readline.question();
+  }
+}
+
 
 while (true) {
   let board = initializeBoard();
-  let currentPlayer = WHO_GOES_FIRST;
+  let currentPlayer = whoGoesFirst;
 
   while (true) {
     displayBoard(board);
