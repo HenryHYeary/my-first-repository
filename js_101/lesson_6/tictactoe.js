@@ -199,7 +199,15 @@ while (true) {
 
   prompt('Play again? (y or n)');
   let answer = readline.question().toLowerCase()[0];
-  if (answer !== 'y') break;
+  if (answer === 'n') {
+    break;
+  } else if (answer === 'y') {
+    continue;
+  } else {
+    console.log('Invalid input, please try again.');
+    answer = readline.question().toLowerCase()[0];
+  }
+  
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
