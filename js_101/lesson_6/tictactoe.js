@@ -102,15 +102,21 @@ function computerChoosesSquare(board) {
   let square;
   for (let i = 0; i < WINNING_LINES.length; i++) {
     let line = WINNING_LINES[i];
-    square = findAtRiskSquare(line, board, HUMAN_MARKER);
+    square = findAtRiskSquare(line, board, COMPUTER_MARKER);
     if (square) break;
   }
 
   if (!square) {
     for (let i = 0; i < WINNING_LINES.length; i++) {
       let line = WINNING_LINES[i];
-      square = findAtRiskSquare(line, board, COMPUTER_MARKER);
+      square = findAtRiskSquare(line, board, HUMAN_MARKER);
       if (square) break;
+    }
+  }
+
+  if (!square) {
+    if (emptySquares(board).includes('5')) {
+      square = '5'
     }
   }
   
