@@ -178,21 +178,13 @@ while (true) {
 
   while (true) {
     displayBoard(board);
-  
-    if (WHO_GOES_FIRST === 'player') {
-      playerChoosesSquare(board);
-      if (someoneWon(board) || boardFull(board)) break;
-  
-      computerChoosesSquare(board);
-      if (someoneWon(board) || boardFull(board)) break;
 
-    } else if (WHO_GOES_FIRST === 'computer') {
-      computerChoosesSquare(board);
-      if (someoneWon(board) || boardFull(board)) break;
+    playerChoosesSquare(board);
+    if (someoneWon(board) || boardFull(board)) break;
+    
+    computerChoosesSquare(board);
+    if (someoneWon(board) || boardFull(board)) break;
 
-      playerChoosesSquare(board);
-      if (someoneWon(board) || boardFull(board)) break;
-    }
   }
   
   displayBoard(board);
