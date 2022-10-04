@@ -3,6 +3,7 @@ const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MATCH_WIN = 5;
+const WHO_GOES_FIRST = 'computer';
 const WINNING_LINES = [
   [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
   [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
@@ -178,12 +179,20 @@ while (true) {
   while (true) {
     displayBoard(board);
   
-    playerChoosesSquare(board);
-    if (someoneWon(board) || boardFull(board)) break;
+    if (WHO_GOES_FIRST === 'player') {
+      playerChoosesSquare(board);
+      if (someoneWon(board) || boardFull(board)) break;
   
-    computerChoosesSquare(board);
-    if (someoneWon(board) || boardFull(board)) break;
-    
+      computerChoosesSquare(board);
+      if (someoneWon(board) || boardFull(board)) break;
+
+    } else if (WHO_GOES_FIRST === 'computer') {
+      computerChoosesSquare(board);
+      if (someoneWon(board) || boardFull(board)) break;
+
+      playerChoosesSquare(board);
+      if (someoneWon(board) || boardFull(board)) break;
+    }
   }
   
   displayBoard(board);
