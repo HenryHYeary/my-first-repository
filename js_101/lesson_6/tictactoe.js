@@ -173,18 +173,32 @@ function winCount(board) {
   }
 }
 
+function chooseSquare(board, currentPlayer) {
+  if (currentPlayer === 'player') {
+    return playerChoosesSquare(board);
+  } else {
+    return computerChoosesSquare(board);
+  }
+}
+
+function alternatePlayer(currentPlayer) {
+  if (currentPlayer === 'player') {
+    return 'computer';
+  } else {
+    return 'player';
+  }
+}
+
+
 while (true) {
   let board = initializeBoard();
+  let currentPlayer = WHO_GOES_FIRST;
 
   while (true) {
     displayBoard(board);
-
-    playerChoosesSquare(board);
+    chooseSquare(board, currentPlayer);
+    currentPlayer = alternatePlayer(currentPlayer);
     if (someoneWon(board) || boardFull(board)) break;
-    
-    computerChoosesSquare(board);
-    if (someoneWon(board) || boardFull(board)) break;
-
   }
   
   displayBoard(board);
