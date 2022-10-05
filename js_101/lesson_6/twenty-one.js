@@ -12,7 +12,7 @@
 
 const readline = require('readline-sync');
 const SUITS = ['S', 'H', 'D', 'C'];
-const FACE_CARDS = ['J', 'K', 'Q'];
+const FACE_CARDS = ['Jack', 'King', 'Queen'];
 
 
 function initalizeDeck() {
@@ -20,30 +20,26 @@ function initalizeDeck() {
 
   for (let i = 2; i <= 10; i++) {
     SUITS.forEach(suit => {
-      deck.push(suit, `${i}`);
+      deck.push([suit, `${i}`]);
     });
   }
 
   FACE_CARDS.forEach(face => {
     SUITS.forEach(suit => {
-      deck.push(suit, face);
+      deck.push([suit, face]);
     })
   });
 
   SUITS.forEach(suit => {
-    deck.push(suit, 'A');
+    deck.push([suit, 'A']);
   });
 
   return deck;
 }
 
-function dealRandomCard(deck, currentPlayer) {
+function dealRandomCard(deck) {
   let randomIndex = Math.floor(Math.random() * deck.length);
-  if (currentPlayer === 'player') {
-    playerHand.push(deck[randomIndex]);
-  } else {
-    dealerHand.push(deck[randomIndex]);
-  }
+  return deck[randomIndex];
 }
 
 function total(cards) {
@@ -61,8 +57,8 @@ function total(cards) {
   });
 
   let aces = values.filter(value => value === 'A');
-  aces.forEach(ace => {
-    if (sum >= 21) sum -= 10;
+  aces.forEach(total => {
+    if (total >= 21) total -= 10;
   });
 }
 
@@ -77,15 +73,33 @@ function shuffle(array) {
   }
 }
 
+function determineWinner(playerTotal1, playerTotal2) {
+  if (playerTotal1 > playerTotal2 && !(busted(playerTotal1))) {
+    console.log(`Congratulations! You won!`);
+  } else if (playerTotal1 < playerTotal2 && !(busted(playerTotal2))) {
+    console.log('The dealer wins!');
+  } else {
+    console.log('You tied!');
+  }
+}
+
 while (true) {
   let deck = initalizeDeck();
+  shuffle(deck);
   let playerHand = [];
   let dealerHand = [];
 
-  dealRandomCard(deck, playerHand);
-  dealRandomCard(deck, dealerHand);
-  dealRandomCard(deck, playerHand);
-  dealRandomCard(deck, dealerHand);
+  playerHand.push(dealRandomCard(deck));
+  dealerHand.push(dealRandomCard(deck));
+  playerHand.push(dealRandomCard(deck));
+  dealerHand.push(dealRandomCard(deck));
+
+  function displayCardValues() {
+    console.log(`Dealer has: ${dealerHand[0][1]} and unknown card.`);
+    console.log(`You have: ${playerHand[0][1]} and ${playerHand[1][1]}`);
+  }
+
+  displayCardValues();
 
   console.log('Hit or stay?');
   let answer = readline.question();
