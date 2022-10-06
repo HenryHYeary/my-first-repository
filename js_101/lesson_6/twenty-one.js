@@ -91,16 +91,21 @@ function joinOr(arr, delimiter = ', ', conjunction = 'or') {
 }
 
 function determineWinner(playerTotal, dealerTotal) {
-  if (playerTotal > dealerTotal) {
-    console.log(`Congratulations! You won!`);
-  } else if (playerTotal < dealerTotal) {
-    console.log('The dealer wins!');
-  } else if (busted(playerTotal)){
-    console.log('You busted! The dealer wins.');
+  if (busted(playerTotal)) {
+    console.log(`You busted! The dealer wins.`);
+    return 'dealer';
   } else if (busted(dealerTotal)) {
     console.log('The dealer busted! You win!');
+    return 'player';
+  } else if (playerTotal > dealerTotal){
+    console.log('Congratulations, you won!');
+    return 'player';
+  } else if (playerTotal < dealerTotal) {
+    console.log('The dealer won!');
+    return 'dealer';
   } else {
     console.log('You tied!');
+    return 'neither';
   }
 }
 
@@ -129,8 +134,8 @@ while (true) {
   console.log('Hit or stay?');
   let answer = readline.question();
   if (answer === 'hit') {
+    playerHand.push(dealRandomCard(deck));
     displayCardValues();
-    dealRandomCard(deck, playerHand);
     console.log('Hit or stay?');
     answer = readline.question();
   }
@@ -139,11 +144,18 @@ while (true) {
     dealRandomCard(deck, dealerHand);
   }
 
+  if (busted(total(playerHand))) {
+    determineWinner(total(playerHand), total(dealerHand));
+    break;
+  } else if (busted(total(dealerHand))) {
+    determineWinner(total(playerHand), total(dealerHand))
+    break;
+  }
 
   if (answer === 'stay') {
     determineWinner(total(playerHand), total(dealerHand));
   }
 
-  break;
+  if (determineWinner(total(playerHand), total(dealerHand)) !== 'neither') break;
 }
 
