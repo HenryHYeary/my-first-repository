@@ -57,9 +57,11 @@ function total(cards) {
   });
 
   let aces = values.filter(value => value === 'A');
-  aces.forEach(total => {
-    if (total >= 21) total -= 10;
+  aces.forEach(ace => {
+    if (sum >= 21) ace -= 10;
   });
+
+  return sum;
 }
 
 function busted(total) {
@@ -73,11 +75,30 @@ function shuffle(array) {
   }
 }
 
-function determineWinner(playerTotal1, playerTotal2) {
-  if (playerTotal1 > playerTotal2 && !(busted(playerTotal1))) {
+function joinOr(arr, delimiter = ', ', conjunction = 'or') {
+  switch(arr.length) {
+    case 0:
+      return '';
+    case 1:
+      return arr.join();
+    case 2:
+      return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
+    default: 
+      let joinedString = arr.join(delimiter);
+      let finalElement = String(arr[arr.length - 1]);
+      return `${joinedString.substring(0, joinedString.length - 2)} ${conjunction} ${finalElement}`
+  }
+}
+
+function determineWinner(playerTotal, dealerTotal) {
+  if (playerTotal > dealerTotal) {
     console.log(`Congratulations! You won!`);
-  } else if (playerTotal1 < playerTotal2 && !(busted(playerTotal2))) {
+  } else if (playerTotal < dealerTotal) {
     console.log('The dealer wins!');
+  } else if (busted(playerTotal)){
+    console.log('You busted! The dealer wins.');
+  } else if (busted(dealerTotal)) {
+    console.log('The dealer busted! You win!');
   } else {
     console.log('You tied!');
   }
@@ -95,8 +116,12 @@ while (true) {
   dealerHand.push(dealRandomCard(deck));
 
   function displayCardValues() {
+    let valuesOnly = []
+    playerHand.forEach(subArr => {
+      valuesOnly.push(subArr[1]);
+    })
     console.log(`Dealer has: ${dealerHand[0][1]} and unknown card.`);
-    console.log(`You have: ${playerHand[0][1]} and ${playerHand[1][1]}`);
+    console.log(`You have: ${joinOr(valuesOnly, ', ', 'and')}`);
   }
 
   displayCardValues();
@@ -104,6 +129,7 @@ while (true) {
   console.log('Hit or stay?');
   let answer = readline.question();
   if (answer === 'hit') {
+    displayCardValues();
     dealRandomCard(deck, playerHand);
     console.log('Hit or stay?');
     answer = readline.question();
@@ -114,14 +140,10 @@ while (true) {
   }
 
 
-  if (answer === 'stay' || busted(total(playerHand))) break;
-
-  if (busted(total(playerHand))) {
-    console.log('You busted! The dealer wins.');
-  } else {
-    console.log('You chose to stay!');
+  if (answer === 'stay') {
+    determineWinner(total(playerHand), total(dealerHand));
   }
 
-  if (busted(total(dealerHand))) break;
+  break;
 }
 
