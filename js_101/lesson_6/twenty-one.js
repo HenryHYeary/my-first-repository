@@ -56,9 +56,8 @@ function total(cards) {
     }
   });
 
-  let aces = values.filter(value => value === 'A');
-  aces.forEach(ace => {
-    if (sum >= 21) ace -= 10;
+  values.filter(value => value === 'A').forEach(_ => {
+    if (sum > 21) sum -=10;
   });
 
   return sum;
@@ -125,7 +124,7 @@ while (true) {
     playerHand.forEach(subArr => {
       valuesOnly.push(subArr[1]);
     })
-    console.log(`Dealer has: ${dealerHand[0][1]} and unknown card.`);
+    console.log(`Dealer has: ${dealerHand[0][1]} and unknown card(s).`);
     console.log(`You have: ${joinOr(valuesOnly, ', ', 'and')}`);
   }
 
