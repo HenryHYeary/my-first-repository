@@ -32,14 +32,10 @@ function initalizeDeck() {
   });
 
   SUITS.forEach(suit => {
-    deck.push([suit, 'A']);
+    deck.push([suit, 'Ace']);
   });
 
-  return deck;
-}
-
-function hit(hand) {
-  hand.push(dealRandomCard(deck));
+  return shuffle(deck);
 }
 
 function total(cards) {
@@ -47,7 +43,7 @@ function total(cards) {
 
   let sum = 0;
   values.forEach(value => {
-    if (value === 'A') {
+    if (value === 'Ace') {
       sum += 11;
     } else if (FACE_CARDS.includes(value)) {
       sum += 10;
@@ -56,7 +52,7 @@ function total(cards) {
     }
   });
 
-  values.filter(value => value === 'A').forEach(_ => {
+  values.filter(value => value === 'Ace').forEach(_ => {
     if (sum > 21) sum -=10;
   });
 
@@ -136,4 +132,26 @@ function playAgain() {
 
 function popTwoFromDeck(deck) {
   return [deck.pop(), deck.pop()];
+}
+
+function hand(cards) {
+  return cards.map(card => `${card[1]}${card[0]}`).join(' ');
+}
+
+while (true) {
+  prompt('Welcome to twenty one!');
+
+  let deck = initalizeDeck();
+  let playerHand = [];
+  let dealerHand = [];
+
+  playerHand.push(...popTwoFromDeck(deck));
+  dealerHand.push(...popTwoFromDeck(deck));
+
+  prompt(`Dealer has ${dealerHand[0][1]} and ?`);
+  prompt(`Player has ${joinOr(([playerHand[0][1], playerHand[1][1]]), ', ', 'and')}, for a total of ${total(playerHand)}`);
+
+  while (true) {
+    
+  }
 }
