@@ -10,6 +10,7 @@
 7. Compare cards and declare winner.
 */
 
+
 const readline = require('readline-sync');
 const SUITS = ['S', 'H', 'D', 'C'];
 const FACE_CARDS = ['Jack', 'King', 'Queen'];
@@ -37,9 +38,8 @@ function initalizeDeck() {
   return deck;
 }
 
-function dealRandomCard(deck) {
-  let randomIndex = Math.floor(Math.random() * deck.length);
-  return deck[randomIndex];
+function hit(hand) {
+  hand.push(dealRandomCard(deck));
 }
 
 function total(cards) {
@@ -63,15 +63,8 @@ function total(cards) {
   return sum;
 }
 
-function busted(total) {
-  return total > 21;
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let otherIndex = Math.floor(Math.random() * (i + 1));
-    [array[i], array[otherIndex]] = [array[otherIndex], array[i]];
-  }
+function prompt(message) {
+  console.log(`=> ${message}`);
 }
 
 function joinOr(arr, delimiter = ', ', conjunction = 'or') {
@@ -83,78 +76,64 @@ function joinOr(arr, delimiter = ', ', conjunction = 'or') {
     case 2:
       return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
     default: 
-      let joinedString = arr.join(delimiter);
       let finalElement = String(arr[arr.length - 1]);
-      return `${joinedString.substring(0, joinedString.length - 2)} ${conjunction} ${finalElement}`
+      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`
   }
 }
 
-function determineWinner(playerTotal, dealerTotal) {
-  if (busted(playerTotal)) {
-    console.log(`You busted! The dealer wins.`);
-    return 'dealer';
-  } else if (busted(dealerTotal)) {
-    console.log('The dealer busted! You win!');
-    return 'player';
-  } else if (playerTotal > dealerTotal){
-    console.log('Congratulations, you won!');
-    return 'player';
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let otherIndex = Math.floor(Math.random() * (i + 1));
+    [array[i], array[otherIndex]] = [array[otherIndex], array[i]];
+  }
+
+  return array;
+}
+
+function busted(cards) {
+  return total(cards) > 21;
+}
+
+function determineResult(playerHand, dealerHand) {
+  let playerTotal = total(playerHand);
+  let dealerTotal = total(dealerHand);
+
+  if (playerTotal > 21) {
+    return 'PLAYER_BUSTED';
+  } else if (dealerTotal > 21) {
+    return 'DEALER_BUSTED';
+  } else if (playerTotal > dealerTotal) {
+    return 'PLAYER';
   } else if (playerTotal < dealerTotal) {
-    console.log('The dealer won!');
-    return 'dealer';
+    return 'DEALER';
   } else {
-    console.log('You tied!');
-    return 'neither';
+    return 'TIE';
   }
 }
 
-while (true) {
-  let deck = initalizeDeck();
-  shuffle(deck);
-  let playerHand = [];
-  let dealerHand = [];
+function displayResult(playerHand, dealerHand) {
+  let result = determineResult(playerHand, dealerHand);
 
-  playerHand.push(dealRandomCard(deck));
-  dealerHand.push(dealRandomCard(deck));
-  playerHand.push(dealRandomCard(deck));
-  dealerHand.push(dealRandomCard(deck));
-
-  function displayCardValues() {
-    let valuesOnly = []
-    playerHand.forEach(subArr => {
-      valuesOnly.push(subArr[1]);
-    })
-    console.log(`Dealer has: ${dealerHand[0][1]} and unknown card(s).`);
-    console.log(`You have: ${joinOr(valuesOnly, ', ', 'and')}`);
+  switch (result) {
+    case 'PLAYER_BUSTED': prompt('You busted, the dealer wins!');
+    break;
+    case 'DEALER_BUSTED': prompt('The dealer busted, you win!');
+    break;
+    case 'PLAYER': prompt('Congratulations, you won!');
+    break;
+    case 'DEALER': prompt('The dealer wins!');
+    break;
+    case 'TIE': prompt(`It's a tie!`);
+    break;
   }
+}
 
-  displayCardValues();
-
-  console.log('Hit or stay?');
+function playAgain() {
+  prompt('Would you like to play again? (y or n)');
   let answer = readline.question();
-  if (answer === 'hit') {
-    playerHand.push(dealRandomCard(deck));
-    displayCardValues();
-    console.log('Hit or stay?');
-    answer = readline.question();
-  }
-
-  if (total(dealerHand) <= 17) {
-    dealRandomCard(deck, dealerHand);
-  }
-
-  if (busted(total(playerHand))) {
-    determineWinner(total(playerHand), total(dealerHand));
-    break;
-  } else if (busted(total(dealerHand))) {
-    determineWinner(total(playerHand), total(dealerHand))
-    break;
-  }
-
-  if (answer === 'stay') {
-    determineWinner(total(playerHand), total(dealerHand));
-  }
-
-  if (determineWinner(total(playerHand), total(dealerHand)) !== 'neither') break;
+  return (answer.toLowerCase()[0] === y);
 }
 
+function popTwoFromDeck(deck) {
+  return [deck.pop(), deck.pop()];
+}
