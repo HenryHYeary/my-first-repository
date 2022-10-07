@@ -55,9 +55,8 @@ function joinOr(arr, delimiter = ', ', conjunction = 'or') {
     case 2:
       return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
     default: 
-      let joinedString = arr.join(delimiter);
       let finalElement = String(arr[arr.length - 1]);
-      return `${joinedString.substring(0, joinedString.length - 2)} ${conjunction} ${finalElement}`
+      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`
   }
 }
 

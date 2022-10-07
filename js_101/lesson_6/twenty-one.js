@@ -77,6 +77,15 @@ function joinOr(arr, delimiter = ', ', conjunction = 'or') {
   }
 }
 
+function hand(cards) {
+  let valuesOnly = []
+  cards.forEach(card => {
+    valuesOnly.push(card[1]);
+  });
+
+  return joinOr(valuesOnly, ', ', 'and');
+}
+
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     let otherIndex = Math.floor(Math.random() * (i + 1));
@@ -125,18 +134,16 @@ function displayResult(playerHand, dealerHand) {
 }
 
 function playAgain() {
+  console.log('-------------');
   prompt('Would you like to play again? (y or n)');
   let answer = readline.question();
-  return (answer.toLowerCase()[0] === y);
+  return (answer.toLowerCase()[0] === 'y');
 }
 
 function popTwoFromDeck(deck) {
   return [deck.pop(), deck.pop()];
 }
 
-function hand(cards) {
-  return cards.map(card => `${card[1]}${card[0]}`).join(' ');
-}
 
 while (true) {
   prompt('Welcome to twenty one!');
@@ -152,6 +159,63 @@ while (true) {
   prompt(`Player has ${joinOr(([playerHand[0][1], playerHand[1][1]]), ', ', 'and')}, for a total of ${total(playerHand)}`);
 
   while (true) {
-    
+    let playerTurn;
+    while (true) {
+      prompt('Would you like to (h)it or (s)tay?');
+      playerTurn = readline.question();
+      if (['h', 's'].includes(playerTurn)) break;
+      prompt(`Sorry, must enter 'h' or 's'.`);
+    }
+
+    if (playerTurn === 'h') {
+      playerHand.push(deck.pop());
+
+      prompt('You chose to hit.');
+      prompt(`Your hand is now: ${hand(playerHand)}`);
+      prompt(`Your total is now: ${total(playerHand)}`);
+    }
+
+    if (playerTurn === 's' || busted(playerHand)) break;
   }
+
+  if (busted(playerHand)) {
+    displayResult(playerHand, dealerHand);
+    if (playAgain()) {
+      continue;
+    } else {
+      break;
+    }
+  } else {
+    prompt(`You stayed at ${total(playerHand)}`);
+  }
+
+  prompt('Dealer turn...');
+
+  while (total(dealerHand) < 17) {
+    prompt('Dealer hits.')
+    dealerHand.push(deck.pop());
+
+    prompt(`Dealer's hand is now ${hand(dealerHand)}`);
+  }
+
+  if (busted(dealerHand)) {
+    prompt(`Dealer's  total is now: ${total(dealerHand)}`);
+    displayResult(playerHand, dealerHand);
+    if (playAgain()) {
+      continue;
+    } else {
+      break;
+    }
+  } else {
+    prompt(`Dealer stays at ${total(dealerHand)}`);
+  }
+
+  console.log('============');
+  prompt(`Dealer has ${hand(dealerHand)}, for a total of ${total(dealerHand)}`);
+  prompt(`Player has ${hand(playerHand)}, for a total of ${total(playerHand)}`);
+  console.log('============');
+
+  displayResult(playerHand, dealerHand);
+
+  if (!playAgain()) break;
 }
