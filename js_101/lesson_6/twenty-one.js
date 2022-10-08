@@ -19,16 +19,16 @@ const FACE_CARDS = ['Jack', 'King', 'Queen'];
 function initalizeDeck() {
   let deck = [];
 
-  for (let i = 2; i <= 10; i++) {
+  for (let index = 2; index <= 10; index++) {
     SUITS.forEach(suit => {
-      deck.push([suit, `${i}`]);
+      deck.push([suit, `${index}`]);
     });
   }
 
   FACE_CARDS.forEach(face => {
     SUITS.forEach(suit => {
       deck.push([suit, face]);
-    })
+    });
   });
 
   SUITS.forEach(suit => {
@@ -53,7 +53,7 @@ function total(cards) {
   });
 
   values.filter(value => value === 'Ace').forEach(_ => {
-    if (sum > 21) sum -=10;
+    if (sum > 21) sum -= 10;
   });
 
   return sum;
@@ -64,21 +64,21 @@ function prompt(message) {
 }
 
 function joinOr(arr, delimiter = ', ', conjunction = 'or') {
-  switch(arr.length) {
+  let finalElement = String(arr[arr.length - 1]);
+  switch (arr.length) {
     case 0:
       return '';
     case 1:
       return arr.join();
     case 2:
       return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
-    default: 
-      let finalElement = String(arr[arr.length - 1]);
-      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`
+    default:
+      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`;
   }
 }
 
 function hand(cards) {
-  let valuesOnly = []
+  let valuesOnly = [];
   cards.forEach(card => {
     valuesOnly.push(card[1]);
   });
@@ -87,9 +87,9 @@ function hand(cards) {
 }
 
 function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let otherIndex = Math.floor(Math.random() * (i + 1));
-    [array[i], array[otherIndex]] = [array[otherIndex], array[i]];
+  for (let index = array.length - 1; index > 0; index--) {
+    let otherIndex = Math.floor(Math.random() * (index + 1));
+    [array[index], array[otherIndex]] = [array[otherIndex], array[index]];
   }
 
   return array;
@@ -121,15 +121,15 @@ function displayResult(playerHand, dealerHand) {
 
   switch (result) {
     case 'PLAYER_BUSTED': prompt('You busted, the dealer wins!');
-    break;
+      break;
     case 'DEALER_BUSTED': prompt('The dealer busted, you win!');
-    break;
+      break;
     case 'PLAYER': prompt('Congratulations, you won!');
-    break;
+      break;
     case 'DEALER': prompt('The dealer wins!');
-    break;
+      break;
     case 'TIE': prompt(`It's a tie!`);
-    break;
+      break;
   }
 }
 
@@ -192,7 +192,7 @@ while (true) {
   prompt('Dealer turn...');
 
   while (total(dealerHand) < 17) {
-    prompt('Dealer hits.')
+    prompt('Dealer hits.');
     dealerHand.push(deck.pop());
 
     prompt(`Dealer's hand is now ${hand(dealerHand)}`);
