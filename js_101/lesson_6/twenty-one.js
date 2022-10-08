@@ -14,6 +14,10 @@
 const readline = require('readline-sync');
 const SUITS = ['S', 'H', 'D', 'C'];
 const FACE_CARDS = ['Jack', 'King', 'Queen'];
+const POINTS_TO_WIN = 5;
+
+let playerPoints = 0;
+let dealerPoints = 0;
 
 
 function initalizeDeck() {
@@ -117,21 +121,57 @@ function displayResult(playerTotal, dealerTotal) {
   let result = determineResult(playerTotal, dealerTotal);
 
   switch (result) {
-    case 'PLAYER_BUSTED': prompt('You busted, the dealer wins!');
+    case 'PLAYER_BUSTED': prompt(`You busted, the dealer wins!`);
       break;
-    case 'DEALER_BUSTED': prompt('The dealer busted, you win!');
+    case 'DEALER_BUSTED': prompt(`The dealer busted, you win!`);
       break;
-    case 'PLAYER': prompt('Congratulations, you won!');
+    case 'PLAYER': prompt(`Congratulations, you won!`);
       break;
-    case 'DEALER': prompt('The dealer wins!');
+    case 'DEALER': prompt(`The dealer wins!`);
       break;
     case 'TIE': prompt(`It's a tie!`);
       break;
   }
 }
 
+//Need to figure out how to reset the player and dealer point variables (they are globally scoped and the current function won't do it)
+
+function incrementScores(playerTotal, dealerTotal) {
+  let winner = determineResult(playerTotal, dealerTotal);
+
+  if (winner === 'PLAYER' || winner === 'DEALER_BUSTED') {
+    playerPoints += 1;
+  } else if (winner === 'DEALER' || winner === 'PLAYER_BUSTED') {
+    dealerPoints += 1;
+  }
+
+  displayResult(playerTotal, dealerTotal);
+}
+
+function showTotalScores(playerPoints, dealerPoints) {
+  console.log(`-----------------------`);
+  console.log(`| Your score is: ${playerPoints} | The dealer's score is: ${dealerPoints} | First to ${POINTS_TO_WIN} wins.`);
+  console.log('-----------------------');
+
+  determineOverallWinner(playerPoints, dealerPoints);
+}
+
+function determineOverallWinner(playerPoints, dealerPoints) {
+  if (playerPoints === POINTS_TO_WIN) {
+    prompt(`You win the match!`);
+    resetScores();
+  } else if (dealerPoints === POINTS_TO_WIN) {
+    prompt(`Dealer wins the match!`);
+    resetScores();
+  }
+}
+
+function resetScores() {
+  playerPoints = 0;
+  dealerPoints = 0;
+}
+
 function playAgain() {
-  console.log('-------------');
   prompt('Would you like to play again? (y or n)');
   let answer = readline.question();
   return (answer.toLowerCase()[0] === 'y');
@@ -190,7 +230,8 @@ while (true) {
 
   if (busted(playerTotal)) {
     endOfRound(playerHand, dealerHand);
-    displayResult(playerTotal, dealerTotal);
+    incrementScores(playerTotal, dealerTotal);
+    showTotalScores(playerPoints, dealerPoints);
     if (playAgain()) {
       continue;
     } else {
@@ -213,7 +254,8 @@ while (true) {
   if (busted(dealerTotal)) {
     prompt(`Dealer's  total is now: ${dealerTotal}`);
     endOfRound(playerHand, dealerHand);
-    displayResult(playerTotal, dealerTotal);
+    incrementScores(playerTotal, dealerTotal);
+    showTotalScores(playerPoints, dealerPoints);
     if (playAgain()) {
       continue;
     } else {
@@ -224,8 +266,8 @@ while (true) {
   }
 
   endOfRound(playerHand, dealerHand);
-
-  displayResult(playerTotal, dealerTotal);
+  incrementScores(playerTotal, dealerTotal);
+  showTotalScores(playerPoints, dealerPoints);
 
   if (!playAgain()) break;
 }
