@@ -15,6 +15,8 @@ const readline = require('readline-sync');
 const SUITS = ['S', 'H', 'D', 'C'];
 const FACE_CARDS = ['Jack', 'King', 'Queen'];
 const POINTS_TO_WIN = 5;
+const DEALER_HIT_LIMIT = 17;
+const MAX_SCORE_BEFORE_BUST = 21;
 
 let playerPoints = 0;
 let dealerPoints = 0;
@@ -57,7 +59,7 @@ function total(cards) {
   });
 
   values.filter(value => value === 'Ace').forEach(_ => {
-    if (sum > 21) sum -= 10;
+    if (sum > MAX_SCORE_BEFORE_BUST) sum -= 10;
   });
 
   return sum;
@@ -100,13 +102,25 @@ function shuffle(array) {
 }
 
 function busted(total) {
-  return total > 21;
+  return total > MAX_SCORE_BEFORE_BUST;
+}
+
+function dealersTurn (dealerHand, dealerTotal, deck) {
+  prompt(`Dealer's turn...`);
+
+  while (dealerTotal < DEALER_HIT_LIMIT) {
+    prompt('Dealer hits.');
+    dealerHand.push(deck.pop());
+    dealerTotal = total(dealerHand);
+
+    prompt(`Dealer's hand is now ${hand(dealerHand)}.`);
+  }
 }
 
 function determineResult(playerTotal, dealerTotal) {
-  if (playerTotal > 21) {
+  if (playerTotal > MAX_SCORE_BEFORE_BUST) {
     return 'PLAYER_BUSTED';
-  } else if (dealerTotal > 21) {
+  } else if (dealerTotal > MAX_SCORE_BEFORE_BUST) {
     return 'DEALER_BUSTED';
   } else if (playerTotal > dealerTotal) {
     return 'PLAYER';
@@ -133,8 +147,6 @@ function displayResult(playerTotal, dealerTotal) {
       break;
   }
 }
-
-//Need to figure out how to reset the player and dealer point variables (they are globally scoped and the current function won't do it)
 
 function incrementScores(playerTotal, dealerTotal) {
   let winner = determineResult(playerTotal, dealerTotal);
@@ -173,8 +185,28 @@ function resetScores() {
 
 function playAgain() {
   prompt('Would you like to play again? (y or n)');
-  let answer = readline.question();
-  return (answer.toLowerCase()[0] === 'y');
+  let answer = readline.question().toLowerCase()[0];
+  if (answer === 'n') {
+    return false;
+  } else if (answer === 'y') {
+    return true;
+  } else {
+    prompt('Invalid input, please try again.');
+    answer = readline.question().toLowerCase()[0];
+  }
+}
+
+function hitOrStay() {
+  prompt(`Hit or stay? (h or s).`);
+  let answer = readline.question().toLowerCase()[0];
+  if (answer === 's') {
+    return false;
+  } else if (answer === 'h') {
+    return true;
+  } else {
+    prompt('Invalid input, please try again.');
+    answer = readline.question().toLowerCase()[0];
+  }
 }
 
 function popTwoFromDeck(deck) {
@@ -208,15 +240,9 @@ while (true) {
   prompt(`Player has ${hand(playerHand)}, for a total of ${playerTotal}`);
 
   while (true) {
-    let playerTurn;
-    while (true) {
-      prompt('Would you like to (h)it or (s)tay?');
-      playerTurn = readline.question();
-      if (['h', 's'].includes(playerTurn)) break;
-      prompt(`Sorry, must enter 'h' or 's'.`);
-    }
+    let playerTurn = hitOrStay();
 
-    if (playerTurn === 'h') {
+    if (playerTurn === true) {
       playerHand.push(deck.pop());
       playerTotal = total(playerHand)
 
@@ -225,7 +251,7 @@ while (true) {
       prompt(`Your total is now: ${playerTotal}`);
     }
 
-    if (playerTurn === 's' || busted(playerTotal)) break;
+    if (playerTurn === false || busted(playerTotal)) break;
   }
 
   if (busted(playerTotal)) {
@@ -241,15 +267,7 @@ while (true) {
     prompt(`You stayed at ${playerTotal}`);
   }
 
-  prompt('Dealer turn...');
-
-  while (dealerTotal < 17) {
-    prompt('Dealer hits.');
-    dealerHand.push(deck.pop());
-    dealerTotal = total(dealerHand);
-
-    prompt(`Dealer's hand is now ${hand(dealerHand)}`);
-  }
+  dealersTurn(dealerHand, dealerTotal, deck);
 
   if (busted(dealerTotal)) {
     prompt(`Dealer's  total is now: ${dealerTotal}`);
@@ -261,8 +279,6 @@ while (true) {
     } else {
       break;
     }
-  } else {
-    prompt(`Dealer stays at ${dealerTotal}`);
   }
 
   endOfRound(playerHand, dealerHand);
