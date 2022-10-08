@@ -47,16 +47,16 @@ console.log(joinOr([1, 2]));
 // streamlined solution based on help from course
 
 function joinOr(arr, delimiter = ', ', conjunction = 'or') {
-  switch(arr.length) {
+  let finalElement = String(arr[arr.length - 1]);
+  switch (arr.length) {
     case 0:
       return '';
     case 1:
       return arr.join();
     case 2:
       return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
-    default: 
-      let finalElement = String(arr[arr.length - 1]);
-      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`
+    default:
+      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`;
   }
 }
 

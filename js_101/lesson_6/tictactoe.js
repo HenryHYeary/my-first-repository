@@ -16,17 +16,17 @@ let whoGoesFirst = 'choose';
 function displayBoard(board) {
   console.clear();
 
-  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}.`)
+  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}.`);
 
   console.log('');
   console.log('     |     |');
   console.log(`  ${board['1']}  |  ${board['2']}  |  ${board['3']}`);
   console.log('     |     |');
-  console.log('-----+-----+-----')
+  console.log('-----+-----+-----');
   console.log('     |     |');
   console.log(`  ${board['4']}  |  ${board['5']}  |  ${board['6']}`);
   console.log('     |     |');
-  console.log('-----+-----+-----')
+  console.log('-----+-----+-----');
   console.log('     |     |');
   console.log(`  ${board['7']}  |  ${board['8']}  |  ${board['9']}`);
   console.log('     |     |');
@@ -48,17 +48,16 @@ function prompt(msg) {
 }
 
 function joinOr(arr, delimiter = ', ', conjunction = 'or') {
-  switch(arr.length) {
+  let finalElement = String(arr[arr.length - 1]);
+  switch (arr.length) {
     case 0:
       return '';
     case 1:
       return arr.join();
     case 2:
       return `${String(arr[0])} ${conjunction} ${String(arr[1])}`;
-    default: 
-      let joinedString = arr.join(delimiter);
-      let finalElement = String(arr[arr.length - 1]);
-      return `${joinedString.substring(0, joinedString.length - 2)} ${conjunction} ${finalElement}`
+    default:
+      return `${arr.slice(0, arr.length - 1).join(delimiter)} ${conjunction} ${finalElement}`;
   }
 }
 
@@ -73,7 +72,6 @@ function boardFull(board) {
 
 function playerChoosesSquare(board) {
   let square;
-  
   while (true) {
     prompt(`Choose a square: ${joinOr(emptySquares(board))}:`);
     square = readline.question().trim();
@@ -101,15 +99,15 @@ function findAtRiskSquare(line, board, marker) {
 
 function computerChoosesSquare(board) {
   let square;
-  for (let i = 0; i < WINNING_LINES.length; i++) {
-    let line = WINNING_LINES[i];
+  for (let index = 0; index < WINNING_LINES.length; index++) {
+    let line = WINNING_LINES[index];
     square = findAtRiskSquare(line, board, COMPUTER_MARKER);
     if (square) break;
   }
 
   if (!square) {
-    for (let i = 0; i < WINNING_LINES.length; i++) {
-      let line = WINNING_LINES[i];
+    for (let index = 0; index < WINNING_LINES.length; index++) {
+      let line = WINNING_LINES[index];
       square = findAtRiskSquare(line, board, HUMAN_MARKER);
       if (square) break;
     }
@@ -117,10 +115,10 @@ function computerChoosesSquare(board) {
 
   if (!square) {
     if (emptySquares(board).includes('5')) {
-      square = '5'
+      square = '5';
     }
   }
-  
+
   if (!square) {
     let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
     square = emptySquares(board)[randomIndex];
@@ -134,8 +132,8 @@ function someoneWon(board) {
 }
 
 function detectWinner(board) {
-  for (let i = 0; i < WINNING_LINES.length; i++) {
-    let [ sq1, sq2, sq3 ] = WINNING_LINES[i];
+  for (let index = 0; index < WINNING_LINES.length; index++) {
+    let [ sq1, sq2, sq3 ] = WINNING_LINES[index];
 
     if (
       board[sq1] === HUMAN_MARKER &&
@@ -213,12 +211,12 @@ while (true) {
     currentPlayer = alternatePlayer(currentPlayer);
     if (someoneWon(board) || boardFull(board)) break;
   }
-  
+
   displayBoard(board);
-  
+
   if (someoneWon(board)) {
     prompt(`${detectWinner(board)} won!`);
-    } else {
+  } else {
     prompt("It's a tie!");
   }
 
@@ -234,7 +232,7 @@ while (true) {
     console.log('Invalid input, please try again.');
     answer = readline.question().toLowerCase()[0];
   }
-  
+
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
