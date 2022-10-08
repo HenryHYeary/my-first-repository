@@ -141,6 +141,15 @@ function popTwoFromDeck(deck) {
   return [deck.pop(), deck.pop()];
 }
 
+function endOfRound(playerHand, dealerHand) {
+  let playerTotal = total(playerHand);
+  let dealerTotal = total(dealerHand);
+
+  console.log('============');
+  prompt(`Dealer has ${hand(dealerHand)}, for a total of ${dealerTotal}`);
+  prompt(`Player has ${hand(playerHand)}, for a total of ${playerTotal}`);
+  console.log('============');
+}
 
 while (true) {
   prompt('Welcome to twenty one!');
@@ -180,6 +189,7 @@ while (true) {
   }
 
   if (busted(playerTotal)) {
+    endOfRound(playerHand, dealerHand);
     displayResult(playerTotal, dealerTotal);
     if (playAgain()) {
       continue;
@@ -202,6 +212,7 @@ while (true) {
 
   if (busted(dealerTotal)) {
     prompt(`Dealer's  total is now: ${dealerTotal}`);
+    endOfRound(playerHand, dealerHand);
     displayResult(playerTotal, dealerTotal);
     if (playAgain()) {
       continue;
@@ -212,10 +223,7 @@ while (true) {
     prompt(`Dealer stays at ${dealerTotal}`);
   }
 
-  console.log('============');
-  prompt(`Dealer has ${hand(dealerHand)}, for a total of ${dealerTotal}`);
-  prompt(`Player has ${hand(playerHand)}, for a total of ${playerTotal}`);
-  console.log('============');
+  endOfRound(playerHand, dealerHand);
 
   displayResult(playerTotal, dealerTotal);
 
