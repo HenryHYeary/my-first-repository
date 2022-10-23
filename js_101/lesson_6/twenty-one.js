@@ -244,7 +244,7 @@ while (true) {
 
     if (playerTurn === true) {
       playerHand.push(deck.pop());
-      playerTotal = total(playerHand)
+      playerTotal = total(playerHand);
 
       prompt('You chose to hit.');
       prompt(`Your hand is now: ${hand(playerHand)}`);
