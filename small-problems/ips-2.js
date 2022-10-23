@@ -27,6 +27,70 @@ function diamond(number) {
   }
 }
 
-diamond(1);
-diamond(3);
-diamond(9);
+// Second solution
+
+function diamond2(number) {
+  numberSequence(number).forEach(currentNumber => {
+    console.log(`${' '.repeat((number - currentNumber) / 2)}${'*' + ' '.repeat(currentNumber) + '*'}`);
+  });
+}
+
+function numberSequence(number) {
+  let resultArr = [];
+  let increment = 2;
+  let currentNumber = 1;
+
+  while (currentNumber > 0) {
+    resultArr.push(currentNumber);
+    if (currentNumber === number) {
+      increment = -2;
+    }
+    currentNumber += increment;
+  }
+
+  return resultArr;
+}
+
+// further exploration
+
+function hollowDiamond(number) {
+  if (number === 1) {
+    console.log('*');
+  } else {
+    let prependedSpaces = numberSequence(number).map(currentNumber => {
+      return (number - currentNumber) / 2;
+    });
+  
+    spaceNumberSequence(number).forEach((currentNumber, index) => {
+      if (currentNumber === 0) {
+        console.log(`${' '.repeat((number - 1) / 2) + '*'}`);
+      } else {
+        console.log(`${' '.repeat(prependedSpaces[index]) + '*' + ' '.repeat(currentNumber) + '*'}`);
+      }
+    });
+  }
+}
+
+function spaceNumberSequence(number) {
+  let resultArr = [];
+  let increment = 2;
+  let currentNumber = 1;
+
+  resultArr.push(0);
+  
+  while (currentNumber > 0) {
+    resultArr.push(currentNumber);
+    if (currentNumber === number - 2) {
+      increment = -2;
+    }
+    currentNumber += increment;
+  }
+
+  resultArr.push(0);
+
+  return resultArr;
+}
+
+hollowDiamond(1);
+hollowDiamond(3);
+hollowDiamond(9);
