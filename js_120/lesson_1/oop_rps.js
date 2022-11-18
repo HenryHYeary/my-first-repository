@@ -31,6 +31,35 @@ function createPlayer(playerType) {
   };
 }
 
+const RPSGame = {
+  human: createPlayer('human'),
+  computer: createPlayer('computer'),
+
+  displayWelcomeMessage() {
+    console.log('Welcome to Rock, Paper, Scissors!');
+  },
+
+  displayGoodbyeMessage() {
+    console.log('Thanks for playing Rock, Paper, Scissors. Goodbye!');
+  },
+
+  displayWinner() {
+    console.log(`You chose: ${this.human.move}`);
+    console.log(`The computer chose: ${this.computer.move}`);
+  },
+
+  play() {
+    this.displayWelcomeMessage();
+    this.human.choose();
+    this.computer.choose();
+    this.displayWinner();
+    this.displayGoodbyeMessage();
+  },
+};
+
+RPSGame.play();
+
+/*
 function createMove() {
   return {
 
@@ -46,29 +75,5 @@ function createRule() {
 let compare = function(move1, move2) {
 
 };
+*/
 
-const RPSGame = {
-  human: createPlayer('human'),
-  computer: createPlayer('computer'),
-
-  displayWelcomeMessage() {
-    console.log('Welcome to Rock, Paper, Scissors!');
-  },
-
-  displayGoodbyeMessage() {
-    console.log('Thanks for playing Rock, Paper, Scissors. Goodbye!');
-  },
-
-  displayMessage() {
-    console.log(`You chose: ${this.human.move}`);
-    console.log(`The computer chose ${this.computer.move}`);
-  },
-
-  play() {
-    this.displayWelcomeMessage();
-    this.human.choose();
-    this.computer.choose();
-    this.displayWinner();
-    this.displayGoodbyeMessage();
-  },
-};
