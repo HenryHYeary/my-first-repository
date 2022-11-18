@@ -43,6 +43,12 @@ function spacesBetween(number) {
   return sequenceArr;
 }
 
+function printAsterisks(spaceSequence1, spaceSequence2) {
+  for (let currentLog = 0; currentLog < Math.floor(number / 2); currentLog++) {
+    console.log(`${' '.repeat(spaceSequence1.reverse()[currentLog]) + ('*' + ' '.repeat(spaceSequence2[currentLog])).repeat(3)}`);
+  }
+}
+
 star(7);
 star(9);
 star(11);
