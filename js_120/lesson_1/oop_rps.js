@@ -11,7 +11,6 @@ function createComputer() {
   let playerObject = createPlayer();
 
   let computerObject = {
-    move: null,
 
     choose() {
       let choices = ['rock', 'paper', 'scissors'];
@@ -27,7 +26,7 @@ function createHuman() {
   let playerObject = createPlayer();
 
   let humanObject = {
-    choose (){
+    choose () {
       let choice;
 
       while (true) {
@@ -43,37 +42,6 @@ function createHuman() {
 
   return Object.assign(playerObject, humanObject);
 }
-/*
-function createPlayer(playerType) {
-  return {
-    playerType: playerType,
-    move: null,
-    
-    choose () {
-      if (this.isHuman()) {
-        let choice;
-
-        while (true) {
-          console.log('Please choose rock, paper, or scissors.');
-          choice = readline.question();
-          if (['rock', 'paper', 'scissors'].includes(choice)) break;
-          console.log('Sorry, invalid choice.');
-        }
-
-        this.move = choice;
-      } else {
-        let choices = ['rock', 'paper', 'scissors'];
-        let randomIndex = Math.floor(Math.random() * choices.length);
-        this.move = choices[randomIndex];
-      }
-    },
-
-    isHuman() {
-      return this.playerType === 'human';
-    },
-  };
-}
-*/
 
 const RPSGame = {
   human: createHuman(),
@@ -94,12 +62,12 @@ const RPSGame = {
     console.log(`You chose: ${this.human.move}`);
     console.log(`The computer chose: ${this.computer.move}`);
 
-    if ((humanMove === 'rock' && computerMove === 'scissors') || 
-    (humanMove === 'paper' && computerMove === 'rock') || 
+    if ((humanMove === 'rock' && computerMove === 'scissors') ||
+    (humanMove === 'paper' && computerMove === 'rock') ||
     (humanMove === 'scissors' && computerMove === 'paper')) {
       console.log('You win!');
     } else if ((humanMove === 'rock' && computerMove === 'paper') ||
-    (humanMove === 'paper' && computerMove === 'scissors') || 
+    (humanMove === 'paper' && computerMove === 'scissors') ||
     (humanMove === 'scissors' && computerMove === 'rock')) {
       console.log('Computer wins!');
     } else {
