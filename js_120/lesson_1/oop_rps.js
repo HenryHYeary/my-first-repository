@@ -4,6 +4,7 @@ const readline = require('readline-sync');
 function createPlayer() {
   return {
     move: null,
+    score: 0,
   };
 }
 
@@ -65,13 +66,27 @@ const RPSGame = {
     if ((humanMove === 'rock' && computerMove === 'scissors') ||
     (humanMove === 'paper' && computerMove === 'rock') ||
     (humanMove === 'scissors' && computerMove === 'paper')) {
+      this.human.score += 1;
       console.log('You win!');
     } else if ((humanMove === 'rock' && computerMove === 'paper') ||
     (humanMove === 'paper' && computerMove === 'scissors') ||
     (humanMove === 'scissors' && computerMove === 'rock')) {
+      this.computer.score += 1;
       console.log('Computer wins!');
     } else {
       console.log(`It's a tie`);
+    }
+
+    console.log(`You have ${this.human.score} points. The computer has ${this.computer.score} points.`);
+
+    if (this.human.score === 5) {
+      console.log('You win the match! Resetting scores.');
+      this.human.score = 0;
+      this.computer.score = 0;
+    } else if (this.computer.score === 5) {
+      console.log('The computer wins the match! Resetting scores.');
+      this.human.score = 0;
+      this.computer.score = 0;
     }
   },
 
