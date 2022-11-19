@@ -47,6 +47,7 @@ function createHuman() {
 const RPSGame = {
   human: createHuman(),
   computer: createComputer(),
+  moveHistory: [],
 
   displayWelcomeMessage() {
     console.log('Welcome to Rock, Paper, Scissors, Spock, Lizard!');
@@ -104,6 +105,10 @@ const RPSGame = {
     }
   },
 
+  addHistory() {
+    this.moveHistory.push({player: this.human.move, computer: this.computer.move});
+  },
+
   playAgain() {
     console.log('Would you like to play again? (y/n)');
     let answer = readline.question();
@@ -116,6 +121,9 @@ const RPSGame = {
       this.human.choose();
       this.computer.choose();
       this.displayWinner();
+      this.addHistory();
+      console.log('Move history:')
+      console.log(this.moveHistory);
       if (!this.playAgain()) break;
     }
     this.displayGoodbyeMessage();
