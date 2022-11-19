@@ -14,7 +14,7 @@ function createComputer() {
   let computerObject = {
 
     choose() {
-      let choices = ['rock', 'paper', 'scissors'];
+      let choices = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
       let randomIndex = Math.floor(Math.random() * choices.length);
       this.move = choices[randomIndex];
     },
@@ -31,9 +31,9 @@ function createHuman() {
       let choice;
 
       while (true) {
-        console.log('Please choose rock, paper, or scissors:');
+        console.log('Please choose rock, paper, scissors, spock, or lizard:');
         choice = readline.question();
-        if (['rock', 'paper', 'scissors'].includes(choice)) break;
+        if (['rock', 'paper', 'scissors', 'spock', 'lizard'].includes(choice)) break;
         console.log('Sorry, invalid choice.');
       }
 
@@ -49,11 +49,11 @@ const RPSGame = {
   computer: createComputer(),
 
   displayWelcomeMessage() {
-    console.log('Welcome to Rock, Paper, Scissors!');
+    console.log('Welcome to Rock, Paper, Scissors, Spock, Lizard!');
   },
 
   displayGoodbyeMessage() {
-    console.log('Thanks for playing Rock, Paper, Scissors. Goodbye!');
+    console.log('Thanks for playing Rock, Paper, Scissors, Spock, Lizard. Goodbye!');
   },
 
   displayWinner() {
@@ -63,14 +63,28 @@ const RPSGame = {
     console.log(`You chose: ${this.human.move}`);
     console.log(`The computer chose: ${this.computer.move}`);
 
-    if ((humanMove === 'rock' && computerMove === 'scissors') ||
+    if ((humanMove === 'spock' && computerMove === 'rock') ||
+    (humanMove === 'spock' && computerMove === 'scissors') ||
+    (humanMove === 'lizard' && computerMove === 'paper') ||
+    (humanMove === 'lizard' && computerMove === 'spock') ||
+    (humanMove === 'rock' && computerMove === 'lizard') ||
+    (humanMove === 'rock' && computerMove === 'scissors') ||
     (humanMove === 'paper' && computerMove === 'rock') ||
+    (humanMove === 'paper' && computerMove === 'spock') ||
+    (humanMove === 'scissors' && computerMove === 'lizard') ||
     (humanMove === 'scissors' && computerMove === 'paper')) {
       this.human.score += 1;
       console.log('You win!');
-    } else if ((humanMove === 'rock' && computerMove === 'paper') ||
-    (humanMove === 'paper' && computerMove === 'scissors') ||
-    (humanMove === 'scissors' && computerMove === 'rock')) {
+    } else if ((computerMove === 'spock' && humanMove === 'rock') ||
+    (computerMove === 'spock' && humanMove === 'scissors') ||
+    (computerMove === 'lizard' && humanMove === 'paper') ||
+    (computerMove === 'lizard' && humanMove === 'spock') ||
+    (computerMove === 'rock' && humanMove === 'lizard') ||
+    (computerMove === 'rock' && humanMove === 'scissors') ||
+    (computerMove === 'paper' && humanMove === 'rock') ||
+    (computerMove === 'paper' && humanMove === 'spock') ||
+    (computerMove === 'scissors' && humanMove === 'lizard') ||
+    (computerMove === 'scissors' && humanMove === 'paper')) {
       this.computer.score += 1;
       console.log('Computer wins!');
     } else {
