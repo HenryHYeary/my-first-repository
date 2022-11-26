@@ -1,104 +1,104 @@
 class Board {
-    constructor() {
+  constructor() {
   
-    }
+  }
+}
+  
+class Square {
+  constructor() {
+  
+  }
+}
+  
+class Row {
+  constructor() {
+  
+  }
+}
+  
+class Marker {
+  constructor() {
+  
+  }
+}
+  
+class Player {
+  constructor() {
+  
   }
   
-  class Square {
-    constructor() {
+  mark() {
   
-    }
   }
   
-  class Row {
-    constructor() {
+  play() {
   
-    }
+  }
+}
+  
+class Human extends Player {
+  constructor() {
+  
+  }
+}
+  
+class Computer extends Player {
+  constructor() {
+  
+  }
+}
+  
+class TTTGame {
+  constructor() {
+  
   }
   
-  class Marker {
-    constructor() {
+  play() {
+    this.displayWelcomeMessage();
   
+    while (true) {
+      this.displayBoard();
+  
+      this.firstPlayerMoves();
+      if (this.gameOver()) break;
+  
+      this.secondPlayerMoves();
+      if (this.gameOver()) break;
+      break;
     }
+  
+    this.displayResults();
+    this.displayGoodbyeMessage();
   }
   
-  class Player {
-    constructor() {
-  
-    }
-  
-    mark() {
-  
-    }
-  
-    play() {
-  
-    }
+  displayWelcomeMessage() {
+    console.log('Welcome to Tic Tac Toe!');
   }
   
-  class Human extends Player {
-    constructor() {
-  
-    }
+  displayGoodbyeMessage() {
+    console.log('Thanks for playing Tic Tac Toe! Goodbye!');
   }
   
-  class Computer extends Player {
-    constructor() {
+  displayResults() {
   
-    }
   }
   
-  class TTTGame {
-    constructor() {
+  displayBoard() {
   
-    }
-  
-    play() {
-      this.displayWelcomeMessage();
-  
-      while (true) {
-        this.displayBoard();
-  
-        this.firstPlayerMoves();
-        if (this.gameOver()) break;
-  
-        this.secondPlayerMoves();
-        if (this.gameOver()) break;
-        break;
-      }
-  
-      this.displayResults();
-      this.displayGoodbyeMessage();
-    }
-  
-    displayWelcomeMessage() {
-      
-    }
-  
-    displayGoodbyeMessage() {
-  
-    }
-  
-    displayResults() {
-  
-    }
-  
-    displayBoard() {
-  
-    }
-  
-    firstPlayerMoves() {
-  
-    }
-  
-    secondPlayerMoves() {
-  
-    }
-  
-    gameOver() {
-      return false;
-    }
   }
   
-  let game = new TTTGame();
-  game.play();
+  firstPlayerMoves() {
+  
+  }
+  
+  secondPlayerMoves() {
+  
+  }
+  
+  gameOver() {
+    return false;
+  }
+}
+  
+let game = new TTTGame();
+game.play();
