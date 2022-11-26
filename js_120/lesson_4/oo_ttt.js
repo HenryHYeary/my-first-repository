@@ -1,6 +1,22 @@
 class Board {
   constructor() {
-  
+
+  }
+
+  display() {
+    console.log('');
+    console.log('     |     |');
+    console.log('  O  |     |  O')
+    console.log('     |     |')
+    console.log('-----+-----+-----');
+    console.log('     |     |');
+    console.log('     |  X  |');
+    console.log('     |     |');
+    console.log('-----+-----+-----');
+    console.log('     |     |');
+    console.log('  X  |     |');
+    console.log('     |     |');
+    console.log('');
   }
 }
   
@@ -50,14 +66,14 @@ class Computer extends Player {
   
 class TTTGame {
   constructor() {
-  
+    this.board = new Board();
   }
   
   play() {
     this.displayWelcomeMessage();
   
     while (true) {
-      this.displayBoard();
+      this.board.display();
   
       this.firstPlayerMoves();
       if (this.gameOver()) break;
@@ -80,10 +96,6 @@ class TTTGame {
   }
   
   displayResults() {
-  
-  }
-  
-  displayBoard() {
   
   }
   
