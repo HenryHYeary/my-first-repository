@@ -1,3 +1,5 @@
+const readline = require('readline-sync');
+
 class Square {
   static UNUSED_SQUARE = ' ';
   static HUMAN_MARKER = 'X';
@@ -65,19 +67,21 @@ class Player {
   
 class Human extends Player {
   constructor() {
-  
+    super();
   }
 }
   
 class Computer extends Player {
   constructor() {
-  
+    super();
   }
 }
   
 class TTTGame {
   constructor() {
     this.board = new Board();
+    this.human = new Human();
+    this.computer = new Computer();
   }
   
   play() {
@@ -86,10 +90,10 @@ class TTTGame {
     while (true) {
       this.board.display();
   
-      this.firstPlayerMoves();
+      this.humanMoves();
       if (this.gameOver()) break;
   
-      this.secondPlayerMoves();
+      this.computerMoves();
       if (this.gameOver()) break;
       break;
     }
@@ -110,12 +114,12 @@ class TTTGame {
   
   }
   
-  firstPlayerMoves() {
-  
+  humanMoves() {
+    console.log('human moves');
   }
   
-  secondPlayerMoves() {
-  
+  computerMoves() {
+    console.log('computer moves');
   }
   
   gameOver() {
