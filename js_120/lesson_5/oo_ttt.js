@@ -8,8 +8,16 @@ class Square {
   constructor(marker = Square.UNUSED_SQUARE) {
     this.marker = marker;
   }
+  
+  isUnused() {
+    return this.marker === Square.UNUSED_SQUARE;
+  }
 
   toString() {
+    return this.marker;
+  }
+
+  getMarker() {
     return this.marker;
   }
 
@@ -25,9 +33,26 @@ class Board {
       this.squares[String(count)] = new Square();
     }
   }
+  
+  isFull() {
+    return this.unusedSquares().length === 0;
+  }
 
   markSquareAt(key, marker) {
     this.squares[key].setMarker(marker);
+  }
+
+  unusedSquares() {
+    let keys = Object.keys(this.squares);
+    return keys.filter(key => this.squares[key].isUnused());
+  }
+
+  countMarkersFor(player, keys) {
+    let markers = keys.filter(key => {
+      return this.squares[key].getMarker() === player.getMarker();
+    });
+
+    return markers.length;
   }
 
   display() {
@@ -44,12 +69,6 @@ class Board {
     console.log(`  ${this.squares['7']}  |  ${this.squares['8']}  |  ${this.squares['9']}`);
     console.log('     |     |');
     console.log('');
-  }
-}
-
-class Row {
-  constructor() {
-
   }
 }
 
@@ -76,6 +95,17 @@ class Computer extends Player {
 }
 
 class TTTGame {
+  static POSSIBLE_WINNING_ROWS = [
+    ['1', '2', '3'],
+    ['4', '5', '6'],
+    ['7', '8', '9'],
+    ['1', '4', '7'],
+    ['2', '5', '8'],
+    ['3', '6', '9'],
+    ['1', '5', '9'],
+    ['3', '5', '7'],
+  ];
+
   constructor() {
     this.board = new Board();
     this.human = new Human();
@@ -89,13 +119,10 @@ class TTTGame {
       this.board.display();
   
       this.humanMoves();
-      this.board.display();
       if (this.gameOver()) break;
   
       this.computerMoves();
-      this.board.display();
       if (this.gameOver()) break;
-      break;
     }
   
     this.displayResults();
@@ -106,12 +133,12 @@ class TTTGame {
     let choice;
 
     while(true) {
+      let validChoices = this.board.unusedSquares();
+      const prompt = `Choose a square (${validChoices.join(', ')}): `;
+      console.log(prompt);
       choice = readline.question('Choose a square between 1 and 9: ');
 
-      let integerValue = parseInt(choice, 10);
-      if (integerValue >= 1 && integerValue <= 9) {
-        break;
-      }
+      if (validChoices.includes(choice)) break;
 
       console.log(`Sorry, that's not a valid choice.`);
       console.log('');
@@ -121,7 +148,13 @@ class TTTGame {
   }
 
   computerMoves() {
-    let choice = Math.floor((9 * Math.random()) + 1);
+    let validChoices = this.board.unusedSquares();
+    let choice;
+
+    do {
+      choice = Math.floor((9 * Math.random()) + 1).toString();
+    } while (!validChoices.includes(choice));
+
     this.board.markSquareAt(choice, this.computer.getMarker());
   }
     
@@ -134,12 +167,28 @@ class TTTGame {
   }
   
   displayResults() {
-  
+    this.board.display();
+    if(this.isWinner(this.human)) {
+      console.log('You won! Congratulations!');
+    } else if (this.isWinner(this.computer)) {
+      console.log('I won! I won! Take that, human!');
+    } else {
+      console.log('A tie game. How boring.');
+    }
+  }
+
+  isWinner(player) {
+    return TTTGame.POSSIBLE_WINNING_ROWS.some(row => {
+      return this.board.countMarkersFor(player, row) === 3;
+    });
   }
   
   gameOver() {
-  
-    return false;
+    return this.board.isFull() || this.someoneWon();
+  }
+
+  someoneWon() {
+    return this.isWinner(this.human) || this.isWinner(this.computer);
   }
 }
 
