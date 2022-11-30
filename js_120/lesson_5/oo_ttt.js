@@ -8,7 +8,7 @@ class Square {
   constructor(marker = Square.UNUSED_SQUARE) {
     this.marker = marker;
   }
-  
+
   isUnused() {
     return this.marker === Square.UNUSED_SQUARE;
   }
@@ -33,7 +33,7 @@ class Board {
       this.squares[String(count)] = new Square();
     }
   }
-  
+
   isFull() {
     return this.unusedSquares().length === 0;
   }
@@ -60,7 +60,7 @@ class Board {
     console.log('     |     |');
     console.log(`  ${this.squares['1']}  |  ${this.squares['2']}  |  ${this.squares['3']}`);
     console.log('     |     |');
-    console.log('-----+-----+-----')
+    console.log('-----+-----+-----');
     console.log('     |     |');
     console.log(`  ${this.squares['4']}  |  ${this.squares['5']}  |  ${this.squares['6']}`);
     console.log('     |     |');
@@ -113,18 +113,20 @@ class TTTGame {
   }
 
   play() {
+    console.clear();
     this.displayWelcomeMessage();
-  
-    while(true) {
+
+    while (true) {
       this.board.display();
-  
+
       this.humanMoves();
       if (this.gameOver()) break;
-  
+
       this.computerMoves();
       if (this.gameOver()) break;
+      console.clear();
     }
-  
+
     this.displayResults();
     this.displayGoodbyeMessage();
   }
@@ -132,7 +134,7 @@ class TTTGame {
   humanMoves() {
     let choice;
 
-    while(true) {
+    while (true) {
       let validChoices = this.board.unusedSquares();
       const prompt = `Choose a square (${validChoices.join(', ')}): `;
       console.log(prompt);
@@ -157,18 +159,19 @@ class TTTGame {
 
     this.board.markSquareAt(choice, this.computer.getMarker());
   }
-    
+
   displayWelcomeMessage() {
     console.log('Welcome to Tic Tac Toe!');
   }
-  
+
   displayGoodbyeMessage() {
     console.log('Thanks for playing Tic Tac Toe! Goodbye!');
   }
-  
+
   displayResults() {
+    console.clear();
     this.board.display();
-    if(this.isWinner(this.human)) {
+    if (this.isWinner(this.human)) {
       console.log('You won! Congratulations!');
     } else if (this.isWinner(this.computer)) {
       console.log('I won! I won! Take that, human!');
@@ -182,7 +185,7 @@ class TTTGame {
       return this.board.countMarkersFor(player, row) === 3;
     });
   }
-  
+
   gameOver() {
     return this.board.isFull() || this.someoneWon();
   }
