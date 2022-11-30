@@ -1,4 +1,4 @@
-const readline = require('readline-sync');
+let readline = require('readline-sync');
 
 class Square {
   static UNUSED_SQUARE = ' ';
@@ -12,22 +12,30 @@ class Square {
   toString() {
     return this.marker;
   }
+
+  setMarker(marker) {
+    this.marker = marker;
+  }
 }
 
 class Board {
   constructor() {
     this.squares = {};
-    for (let counter = 1; counter <= 9; counter++) {
-      this.squares[String(counter)] = new Square();
+    for (let count = 1; count <= 9; count++) {
+      this.squares[String(count)] = new Square();
     }
+  }
+
+  markSquareAt(key, marker) {
+    this.squares[key].setMarker(marker);
   }
 
   display() {
     console.log('');
     console.log('     |     |');
     console.log(`  ${this.squares['1']}  |  ${this.squares['2']}  |  ${this.squares['3']}`);
-    console.log('     |     |')
-    console.log('-----+-----+-----');
+    console.log('     |     |');
+    console.log('-----+-----+-----')
     console.log('     |     |');
     console.log(`  ${this.squares['4']}  |  ${this.squares['5']}  |  ${this.squares['6']}`);
     console.log('     |     |');
@@ -38,62 +46,54 @@ class Board {
     console.log('');
   }
 }
-  
+
 class Row {
   constructor() {
-  
+
   }
 }
-  
-class Marker {
-  constructor() {
-  
-  }
-}
-  
+
 class Player {
-  constructor() {
-  
+  constructor(marker) {
+    this.marker = marker;
   }
-  
-  mark() {
-  
-  }
-  
-  play() {
-  
+
+  getMarker() {
+    return this.marker;
   }
 }
-  
+
 class Human extends Player {
   constructor() {
-    super();
+    super(Square.HUMAN_MARKER);
   }
 }
-  
+
 class Computer extends Player {
   constructor() {
-    super();
+    super(Square.COMPUTER_MARKER);
   }
 }
-  
+
 class TTTGame {
   constructor() {
     this.board = new Board();
     this.human = new Human();
     this.computer = new Computer();
   }
-  
+
   play() {
     this.displayWelcomeMessage();
   
-    while (true) {
+    while(true) {
       this.board.display();
   
       this.humanMoves();
+      this.board.display();
       if (this.gameOver()) break;
   
       this.computerMoves();
+      this.board.display();
       if (this.gameOver()) break;
       break;
     }
@@ -101,7 +101,30 @@ class TTTGame {
     this.displayResults();
     this.displayGoodbyeMessage();
   }
-  
+
+  humanMoves() {
+    let choice;
+
+    while(true) {
+      choice = readline.question('Choose a square between 1 and 9: ');
+
+      let integerValue = parseInt(choice, 10);
+      if (integerValue >= 1 && integerValue <= 9) {
+        break;
+      }
+
+      console.log(`Sorry, that's not a valid choice.`);
+      console.log('');
+    }
+
+    this.board.markSquareAt(choice, this.human.getMarker());
+  }
+
+  computerMoves() {
+    let choice = Math.floor((9 * Math.random()) + 1);
+    this.board.markSquareAt(choice, this.computer.getMarker());
+  }
+    
   displayWelcomeMessage() {
     console.log('Welcome to Tic Tac Toe!');
   }
@@ -114,18 +137,12 @@ class TTTGame {
   
   }
   
-  humanMoves() {
-    console.log('human moves');
-  }
-  
-  computerMoves() {
-    console.log('computer moves');
-  }
-  
   gameOver() {
+  
     return false;
   }
 }
-  
+
+
 let game = new TTTGame();
 game.play();
