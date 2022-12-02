@@ -131,12 +131,16 @@ class TTTGame {
     this.displayGoodbyeMessage();
   }
 
+  joinOr(array, punctuation, conjunction) {
+    return array.slice(0, array.length - 1).join(punctuation) + `${punctuation}${conjunction} ${array[array.length - 1]}`;
+  }
+
   humanMoves() {
     let choice;
 
     while (true) {
       let validChoices = this.board.unusedSquares();
-      const prompt = `Choose a square (${validChoices.join(', ')}): `;
+      const prompt = `Choose a square (${this.joinOr(validChoices, ', ', 'or')}): `;
       console.log(prompt);
       choice = readline.question('Choose a square between 1 and 9: ');
 
