@@ -107,7 +107,6 @@ class TTTGame {
   ];
 
   constructor() {
-    this.board = new Board();
     this.human = new Human();
     this.computer = new Computer();
   }
@@ -116,6 +115,25 @@ class TTTGame {
     console.clear();
     this.displayWelcomeMessage();
 
+    while (true) {
+      this.board = new Board();
+
+      while (true) {
+        this.board.display();
+  
+        this.humanMoves();
+        if (this.gameOver()) break;
+  
+        this.computerMoves();
+        if (this.gameOver()) break;
+        console.clear();
+      }
+  
+      this.displayResults();
+      if (!this.playAgain()) break;
+      console.clear();
+    }
+    /*
     while (true) {
       this.board.display();
 
@@ -129,6 +147,14 @@ class TTTGame {
 
     this.displayResults();
     this.displayGoodbyeMessage();
+    */
+    this.displayGoodbyeMessage();
+  }
+
+  playAgain() {
+    console.log('Would you like to play again? y/n');
+    let answer = readline.question();
+    return answer[0].toLowerCase() === 'y';
   }
 
   joinOr(array, punctuation, conjunction) {
