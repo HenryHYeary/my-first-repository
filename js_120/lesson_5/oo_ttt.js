@@ -133,21 +133,7 @@ class TTTGame {
       if (!this.playAgain()) break;
       console.clear();
     }
-    /*
-    while (true) {
-      this.board.display();
-
-      this.humanMoves();
-      if (this.gameOver()) break;
-
-      this.computerMoves();
-      if (this.gameOver()) break;
-      console.clear();
-    }
-
-    this.displayResults();
-    this.displayGoodbyeMessage();
-    */
+    
     this.displayGoodbyeMessage();
   }
 
@@ -158,7 +144,11 @@ class TTTGame {
   }
 
   joinOr(array, punctuation, conjunction) {
-    return array.slice(0, array.length - 1).join(punctuation) + `${punctuation}${conjunction} ${array[array.length - 1]}`;
+    if (array.length > 1) {
+      return array.slice(0, array.length - 1).join(punctuation) + `${punctuation}${conjunction} ${array[array.length - 1]}`;
+    } else {
+      return String(array[0]);
+    }
   }
 
   humanMoves() {
@@ -179,13 +169,31 @@ class TTTGame {
     this.board.markSquareAt(choice, this.human.getMarker());
   }
 
+  containsUnusedSquare(row) {
+    for (let index = 0; index < row.length; index++) {
+      if (this.board.squares[row[index]].isUnused()) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
   computerMoves() {
     let validChoices = this.board.unusedSquares();
     let choice;
+    let atRiskRow = TTTGame.POSSIBLE_WINNING_ROWS.filter(row => {
+      return this.board.countMarkersFor(this.human, row) === 2 && this.containsUnusedSquare(row);
+    }).shift() || [];
 
-    do {
-      choice = Math.floor((9 * Math.random()) + 1).toString();
-    } while (!validChoices.includes(choice));
+    if (atRiskRow.length !== 0) {
+      choice = atRiskRow.find(square => this.board.squares[square].isUnused());
+    } else {
+      do {
+        choice = Math.floor((9 * Math.random()) + 1).toString();
+      } while (!validChoices.includes(choice));
+    }
+
 
     this.board.markSquareAt(choice, this.computer.getMarker());
   }
