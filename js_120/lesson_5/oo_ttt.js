@@ -182,11 +182,19 @@ class TTTGame {
   computerMoves() {
     let validChoices = this.board.unusedSquares();
     let choice;
+    let winningRow = TTTGame.POSSIBLE_WINNING_ROWS.filter(row => {
+      return this.board.countMarkersFor(this.computer, row) === 2 && this.containsUnusedSquare(row);
+    }).shift() || [];
+
     let atRiskRow = TTTGame.POSSIBLE_WINNING_ROWS.filter(row => {
       return this.board.countMarkersFor(this.human, row) === 2 && this.containsUnusedSquare(row);
     }).shift() || [];
 
-    if (atRiskRow.length !== 0) {
+    if (this.board.squares['5'].isUnused()) {
+      choice = '5';
+    } else if (winningRow.length !== 0) {
+      choice = winningRow.find(square => this.board.squares[square].isUnused());
+    } else if (atRiskRow.length !== 0) {
       choice = atRiskRow.find(square => this.board.squares[square].isUnused());
     } else {
       do {
