@@ -13,14 +13,14 @@ is combined with Object.prototype
 
 Object.prototype.ancestors = function() {
   let ancestorsArr = [];
-  let ancestor = this;
+  let ancestor = Object.getPrototypeOf(this);
 
   while (ancestor.hasOwnProperty('name')) {
     ancestorsArr.push(ancestor.name);
     ancestor = Object.getPrototypeOf(ancestor);
   }
 
-  return ancestorsArr.filter(name => name !== this.name).concat(['Object.prototype']);
+  return ancestorsArr.concat(['Object.prototype']);
 }
 // name property added to make objects easier to identify
 let foo = {name: 'foo'};
