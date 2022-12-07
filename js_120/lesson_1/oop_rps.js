@@ -12,11 +12,23 @@ function createComputer() {
   let playerObject = createPlayer();
 
   let computerObject = {
+    choicesProbability: {0: 0.2, 1: 0.2, 2: 0.2, 3: 0.2, 4: 0.2},
+    choices: ['rock', 'paper', 'scissors', 'spock', 'lizard'],
 
     choose() {
-      let choices = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
-      let randomIndex = Math.floor(Math.random() * choices.length);
-      this.move = choices[randomIndex];
+      let randomIndex = weightedRandom(this.choicesProbability);
+      this.move = this.choices[randomIndex];
+
+      function weightedRandom(probability) {
+        let sum = 0;
+        let random = Math.random();
+        for (let index in probability) {
+          sum += probability[index];
+          if (random <= sum) {
+            return index;
+          }
+        }
+      }
     },
   };
 
@@ -75,6 +87,14 @@ const RPSGame = {
     (humanMove === 'scissors' && computerMove === 'lizard') ||
     (humanMove === 'scissors' && computerMove === 'paper')) {
       this.human.score += 1;
+      this.moveHistory.push({player: humanMove, computer: computerMove, W: 'P'});
+      for (let index in this.computer.choicesProbability) {
+        if (index === this.computer.choices.indexOf(computerMove)) {
+          this.computer.choicesProbability[index] -= 0.05
+        } else {
+          this.computer.choicesProbability[index] += 0.0125;
+        }
+      }
       console.log('You win!');
     } else if ((computerMove === 'spock' && humanMove === 'rock') ||
     (computerMove === 'spock' && humanMove === 'scissors') ||
@@ -87,6 +107,14 @@ const RPSGame = {
     (computerMove === 'scissors' && humanMove === 'lizard') ||
     (computerMove === 'scissors' && humanMove === 'paper')) {
       this.computer.score += 1;
+      this.moveHistory.push({player: humanMove, computer: computerMove, W: 'C'});
+      for (let index in this.computer.choicesProbability) {
+        if (index === this.computer.choices.indexOf(computerMove)) {
+          this.computer.choicesProbability[index] += 0.05
+        } else {
+          this.computer.choicesProbability[index] -= 0.0125;
+        }
+      }
       console.log('Computer wins!');
     } else {
       console.log(`It's a tie`);
@@ -105,9 +133,6 @@ const RPSGame = {
     }
   },
 
-  addHistory() {
-    this.moveHistory.push({player: this.human.move, computer: this.computer.move});
-  },
 
   playAgain() {
     console.log('Would you like to play again? (y/n)');
@@ -121,7 +146,6 @@ const RPSGame = {
       this.human.choose();
       this.computer.choose();
       this.displayWinner();
-      this.addHistory();
       console.log('Move history:')
       console.log(this.moveHistory);
       if (!this.playAgain()) break;
