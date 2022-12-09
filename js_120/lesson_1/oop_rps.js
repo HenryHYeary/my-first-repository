@@ -117,6 +117,7 @@ const RPSGame = {
       }
       console.log('Computer wins!');
     } else {
+      this.moveHistory.push({player: humanMove, computer: computerMove, W: 'T'});
       console.log(`It's a tie`);
     }
 
