@@ -89,26 +89,26 @@ class Participant {
     let suit;
     let rank;
 
-    switch(card[0]) {
+    switch (card[0]) {
       case 'S': suit = 'Spades';
-      break;
+        break;
       case 'C': suit = 'Clubs';
-      break;
+        break;
       case 'H': suit = 'Hearts';
-      break;
+        break;
       case 'D': suit = 'Diamonds';
-      break;
+        break;
     }
 
-    switch(card[1]) {
+    switch (card[1]) {
       case 'A': rank = 'Ace';
-      break;
+        break;
       case 'J': rank = 'Jack';
-      break;
+        break;
       case 'K': rank = 'King';
-      break;
+        break;
       case 'Q': rank = 'Queen';
-      break;
+        break;
       default: rank = card[1];
     }
 
@@ -266,11 +266,11 @@ class TwentyOneGame {
   }
 
   displayWelcomeMessage() {
-    console.clear()
+    console.clear();
     console.log('Welcome to twenty one!');
     console.log('----------------');
     console.log('You currently have $5.');
-    console.log('If you get to $10 you are rich!')
+    console.log('If you get to $10 you are rich!');
     console.log('If you reach $0 you are broke.');
     console.log('----------------');
   }
