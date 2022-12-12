@@ -34,6 +34,15 @@ class Truck extends Vehicle {
 }
 
 
-let ram = new Truck('Dodge', 'Ram', 46);
-console.log(ram.getWheels());
-console.log(ram.payload);
+let bike = new Motorcycle('Kawasaki', 'Jet');
+let car = new Car('Ford', 'Focus');
+let truck = new Truck('Dodge', 'Ram', 200);
+
+const log = console.log;
+log(bike.info());
+log(car.info());
+log(truck.info());
+log(truck.payload);
+log(bike.wheels);
+log(car.wheels);
+log(truck.wheels);

@@ -35,4 +35,8 @@ class Dog extends Animal {
 
 let cat = new Cat("Pepe", 2, "happy");
 console.log(cat.introduce() === "Hello, my name is Pepe and I am 2 years old and happy. Meow meow!");
-// logs true
+
+
+let dog = new Dog('Baxter', 3, 'crazy', 'Ellen');
+console.log(dog.introduce());
+console.log(dog.greetMaster());

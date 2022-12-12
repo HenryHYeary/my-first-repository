@@ -15,7 +15,7 @@ need to create arrays for each owner in owner class
 need dependencies between these two objects to make sure state is updated properly.
 */
 
-
+/*
 class Pet {
   constructor(species, name) {
     this.species = species;
@@ -61,6 +61,59 @@ class Shelter {
       }
       console.log('');
     }
+  }
+}
+*/
+
+// Improved more concise solution
+
+class Pet {
+  constructor(animal, name) {
+    this.animal = animal;
+    this.name = name;
+  }
+
+  description() {
+    return `a ${this.animal} named ${this.name}`
+  }
+}
+
+class Owner {
+  constructor(name) {
+    this.name = name;
+    this.pets = [];
+  }
+
+  numberOfPets() {
+    return this.pets.length;
+  }
+
+  toString() {
+    return this.name;
+  }
+}
+
+class Shelter {
+  constructor() {
+    this.adoptions = [];
+    this.adopters = [];
+  }
+
+  adopt(owner, pet) {
+    owner.pets.push(pet);
+    if (!this.adopters.includes(owner)) {
+      this.adopters.push(owner);
+    }
+  }
+
+  printAdoptions() {
+    this.adopters.forEach(adopter => {
+      console.log(`${adopter} has adopted the following pets:`);
+      adopter.pets.forEach(pet => {
+        console.log(pet.description());
+      });
+      console.log('');
+    });
   }
 }
 
