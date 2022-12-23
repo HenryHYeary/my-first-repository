@@ -33,7 +33,9 @@ add(6);
 // Exercise 8
 
 function later(func, arg) {
-  return () => func(arg);
+  return function() {
+    return func(arg);
+  }
 }
 
 const logger = message => console.log(message);
@@ -43,5 +45,32 @@ logWarning();
 // Exercise 9
 
 function later2(func, arg) {
-
+  return function(nextArg) {
+    return func(arg, nextArg);
+  }
 }
+
+const notify = function(message, when) {
+  console.log(`${message} in ${when} minutes!`);
+};
+
+let shutdownWarning = later2(notify, "The system is shutting down");
+shutdownWarning(30);
+
+// Exercise 10
+
+"use strict";
+
+function bind(object, func) {
+  return function() {
+    return func.call(object);
+  } 
+}
+
+let obj = {}
+let boundFunc = bind(obj, function() {
+  this.foo = 'bar';
+});
+
+boundFunc();
+console.log(obj);
