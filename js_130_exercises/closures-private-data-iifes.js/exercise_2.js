@@ -1,20 +1,17 @@
-// WIP
+function myBind(func, context) {
+  let partialArgs = [].slice.apply(arguments, [2]);
 
-function myBind(func) {
-  return function(context) {
-    return func.call(context, arguments);
+  return function() {
+    let remainingArgs = [].slice.apply(arguments);
+    let fullArgs = partialArgs.concat(remainingArgs);
+    return func.apply(context, fullArgs);
   }
 }
 
-let introBinder = myBind(introduce);
-
-let obj = {
-  name: 'Henry',
-  age: 26,
+function addNumbers(a, b) {
+  return a + b;
 }
 
-function introduce() {
-  console.log(`Hi, my name is ${this.name}, and I am ${this.age} years old.`);
-}
+let addFive = myBind(addNumbers, null, 5);
 
-introBinder(obj);
+console.log(addFive(10));
