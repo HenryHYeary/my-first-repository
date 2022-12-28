@@ -58,6 +58,4 @@ class Triangle {
   }
 }
 
-let triangle = new Triangle(3, 4, 5);
-
 module.exports = Triangle;
