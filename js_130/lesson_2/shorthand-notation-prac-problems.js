@@ -83,8 +83,7 @@
 // Exercise 6
 
 function product() {
-  let args = Array.from(arguments);
-  return args.reduce((total, number) => total * number);
+  return [].reduce.call(arguments, (total, number) => total * number);
 }  
 
 let result = product(2, 3, 4, 5);
@@ -137,7 +136,7 @@ console.log(colors);
 
 // Exercise 10
 
-function stringer(first, second, third, fourth, last) {
+function fiveString(first, second, third, fourth, last) {
   return {
     first,
     last,
@@ -145,7 +144,9 @@ function stringer(first, second, third, fourth, last) {
   }
 }
 
-let newObj = stringer(...[1, 2, 3, 4, 5]);
+let arrOfStrs = ['Hello', 'world', 'I', 'am', 'happy'];
+
+let newObj = fiveString(...arrOfStrs);
 
 let { first, last, middle } = newObj;
 
