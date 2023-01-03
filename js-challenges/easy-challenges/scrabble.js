@@ -10,19 +10,7 @@ class Scrabble {
   };
 
   static score(word) {
-    word = word.replace(' ', '');
-
-    if (word === null) {
-      return 0;
-    }
-
-    let totalScore = 0;
-
-    for (let index = 0; index < word.length; index++) {
-      totalScore += Scrabble.findLetterScore(word[index]);
-    }
-
-    return totalScore;
+    return new Scrabble(word).score();
   }
 
   static findLetterScore(letter) {
