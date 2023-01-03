@@ -15,20 +15,33 @@ should create a constant that matches each numeral character to its correspondin
 Need to find a good subtraction/addition algorithm to deal with remainder situations
 */
 
-const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
-200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000];
-
-const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XX', 'XXX', 'XL', 'L',
-'LX', 'LXX', 'LXXX', 'XC', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM', 'M', 'MM', 'MMM'];
-
 class RomanNumeral {
   constructor(number) {
     this.number = number;
   }
 
-  toRoman() {
+  static NUMBERS = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+  static NUMERALS = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
 
+  toRoman() {
+  let result = '';
+
+  for (let index = 0; index < RomanNumeral.NUMBERS.length; index++) {
+    let quotient = Math.floor(this.number / RomanNumeral.NUMBERS[index]);
+
+    for (let count = 0; count < quotient; count++) {
+      result += RomanNumeral.NUMERALS[index];
+    }
+
+    this.number = this.number % RomanNumeral.NUMBERS[index];
+  }
+
+    return result;
   }
 }
+
+let number = new RomanNumeral(45);
+
+console.log(number.toRoman());
 
 module.exports = RomanNumeral;
