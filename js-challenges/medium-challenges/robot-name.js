@@ -66,7 +66,8 @@ class Robot {
   }
 
   reset() {
-    if (this.hasOwnProperty('robotName')) {
+    if (this.robotName) {
+      Robot.usedNames.splice(Robot.usedNames.indexOf(this.robotName), 1);
       this.robotName = '';
     }
   }
