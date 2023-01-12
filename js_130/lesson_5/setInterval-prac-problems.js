@@ -16,6 +16,6 @@ function stopCounting(counterId) {
 
 let counterId = startCounting();
 
-stopCounting(counterId);
-
-
+setTimeout(() => {
+  stopCounting(counterId);
+}, 5000);
