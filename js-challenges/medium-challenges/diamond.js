@@ -68,9 +68,6 @@ class Diamond {
       if (index === 0) {
         let spaces = substring.length - 1;
         resultString += `${' '.repeat(spaces)}A${' '.repeat(spaces)}\n`;
-      } else if (index === 1){
-        let spaces = substring.length - 1 - index;
-        resultString += `${' '.repeat(spaces)}${alpha[index]}${' '.repeat(index)}${alpha[index]}${' '.repeat(spaces)}\n`;
       } else {
         let outerSpaces = substring.length - 1 - index;
         let middleSpaces = index + (index - 1);
@@ -82,9 +79,6 @@ class Diamond {
       if (index === 0) {
         let spaces = substring.length - 1;
         resultString += `${' '.repeat(spaces)}A${' '.repeat(spaces)}\n`;
-      } else if (index === 1){
-        let spaces = substring.length - 1 - index;
-        resultString += `${' '.repeat(spaces)}${alpha[index]}${' '.repeat(index)}${alpha[index]}${' '.repeat(spaces)}\n`;
       } else {
         let outerSpaces = substring.length - 1 - index;
         let middleSpaces = index + (index - 1);
