@@ -84,3 +84,87 @@ class Clock {
 }
 
 module.exports = Clock;
+
+/*
+input: an argument of either only hours or both hours and minutes
+output: a clock objecct that keeps track of the time and has addition
+and subtraction methods to return a new clock object.
+
+Examples: two clocks that represent the same time should be equal to each other
+a toString method also needs to be supplied for the clock to give it standard
+digital time notation.
+The clocks should also be able to wrap forward or back around into different
+days
+
+Data Structure: should have variables for both hours and minutes. Can keep
+a track of total minutes based on the arguments provided and then add or subtract
+those minutes from the total number of minutes in a day as well. Should have constants
+for minutes in an hour, hours in a day, and minutes in a day.
+
+Algorithm: Create a constructor and use the at method as a form of a constructor
+the at method should return an object that can return another clock object
+that can add or subtract minute values from the original clock time and then return the
+new clock object.
+
+When determining the time multiply out the hours into total minutes and compare that time with
+the total number of minutes in a day. Depending on whether the time exceeds or falls under the total
+amount of time necessary, you can either subtract it from the total number of mins in a day
+or add it to zero.
+*/
+
+// class Clock {
+//   static HOURS_PER_DAY = 24;
+//   static MINS_PER_HOUR = 60;
+//   static MINS_PER_DAY = this.MINS_PER_HOUR * this.HOURS_PER_DAY;
+
+//   static at(hours, mins = 0) {
+//     return new Clock(hours, mins);
+//   }
+
+//   constructor(hours, mins = 0) {
+//     this.hours = hours;
+//     this.mins = mins;
+//   }
+
+//   toString() {
+//     function leadingZeroes(number) {
+//       if (number < 10) {
+//         return `0${String(number)}`;
+//       } else {
+//         return String(number);
+//       }
+//     }
+
+//     return `${leadingZeroes(this.hours)}:${leadingZeroes(this.mins)}`;
+//   }
+
+//   add(mins) {
+//     let hoursToAdd = Math.floor((mins + this.mins) / Clock.MINS_PER_HOUR);
+    
+//     let newHours = (this.hours + hoursToAdd) % Clock.HOURS_PER_DAY;
+//     let newMins = this.mins + (mins % Clock.MINS_PER_HOUR);
+
+//     return new Clock(newHours, newMins);
+//   }
+
+//   isEqual(comparisonClock) {
+//     return this.toString() === comparisonClock.toString();
+//   }
+
+//   subtract(mins) {
+//     let totalMins = (this.hours * Clock.MINS_PER_HOUR) + this.mins;
+//     let difference = totalMins - mins;
+//     if (difference < 0) {
+//       totalMins = Clock.MINS_PER_DAY + (difference % Clock.MINS_PER_DAY);
+//     } else {
+//       totalMins = difference;
+//     }
+
+//     let newHours = Math.floor(totalMins / Clock.MINS_PER_HOUR); 
+//     let newMins = Math.floor(totalMins % Clock.MINS_PER_HOUR);
+
+//     return new Clock(newHours, newMins);
+//   }
+// }
+
+// module.exports = Clock;
