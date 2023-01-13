@@ -28,39 +28,67 @@ end
 return result string
 */
 
-"use strict";
+/*
+input: a letter
+output: a symmetric diamond with each number leading up to and including
+the target letter.
+
+Examples: Diamond should be horizontally and vertically symmetric.
+First line should have only one A, last line should only have one A.
+
+Data Structure: should store variables that point to the number of space
+needed both on the left side of the diamond and in the middle of the diamond
+for every line. Also create an array of the alphabet on the constructor or within
+the method so that the program knows which letter should come next in the diamond
+construction.
+create a slice of the string that extends from A to the target letter
+and use that number of spaces as a reference at the beginning.
+
+Algorithm: The first line should start with the letter of A no matter what
+and have a number of spaces preceding the A that is equal to the length of the
+substring slice between A and the target letter.
+
+All other strings (except for the last string) should have two appearances of the
+current letter in the line and have spaces separating them equal to that characters
+positional index in the substring.
+
+Add each string with a newline character at the end of it to ensure that the 
+total string vertically forms a diamond.
+
+Also need to increment backwards as well for the latter half of the diamond,
+*/
 
 class Diamond {
-  static ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
   static makeDiamond(letter) {
-    let resultString = '';
-    let targetIndex = this.ALPHABET.indexOf(letter);
-    let middleSpace = 1;
+    let alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let substring = alpha.slice(0, alpha.indexOf(letter) + 1);
 
-    for (let index = 0; index <= targetIndex; index++) {
+    let resultString = '';
+    for (let index = 0; index < substring.length; index++) {
       if (index === 0) {
-        resultString += `${' '.repeat(targetIndex)}A${' '.repeat(targetIndex)}\n`;
+        let spaces = substring.length - 1;
+        resultString += `${' '.repeat(spaces)}A${' '.repeat(spaces)}\n`;
       } else if (index === 1){
-        resultString += `${' '.repeat(targetIndex - index)}B` +
-        ` B${' '.repeat(targetIndex - index)}\n`;
+        let spaces = substring.length - 1 - index;
+        resultString += `${' '.repeat(spaces)}${alpha[index]}${' '.repeat(index)}${alpha[index]}${' '.repeat(spaces)}\n`;
       } else {
-        middleSpace += 2;
-        resultString += `${' '.repeat(targetIndex - index)}${this.ALPHABET[index]}` + 
-        `${' '.repeat(middleSpace)}${this.ALPHABET[index]}${' '.repeat(targetIndex - index)}\n`;
+        let outerSpaces = substring.length - 1 - index;
+        let middleSpaces = index + (index - 1);
+        resultString += `${' '.repeat(outerSpaces)}${alpha[index]}${' '.repeat(middleSpaces)}${alpha[index]}${' '.repeat(outerSpaces)}\n`;
       }
     }
 
-    for (let index = targetIndex - 1; index >= 0; index--) {
+    for (let index = substring.length - 2; index >= 0; index--) {
       if (index === 0) {
-        resultString += `${' '.repeat(targetIndex)}A${' '.repeat(targetIndex)}\n`;
+        let spaces = substring.length - 1;
+        resultString += `${' '.repeat(spaces)}A${' '.repeat(spaces)}\n`;
       } else if (index === 1){
-        resultString += `${' '.repeat(targetIndex - index)}B` +
-        ` B${' '.repeat(targetIndex - index)}\n`;
+        let spaces = substring.length - 1 - index;
+        resultString += `${' '.repeat(spaces)}${alpha[index]}${' '.repeat(index)}${alpha[index]}${' '.repeat(spaces)}\n`;
       } else {
-        middleSpace -= 2;
-        resultString += `${' '.repeat(targetIndex - index)}${this.ALPHABET[index]}` + 
-        `${' '.repeat(middleSpace)}${this.ALPHABET[index]}${' '.repeat(targetIndex - index)}\n`;
+        let outerSpaces = substring.length - 1 - index;
+        let middleSpaces = index + (index - 1);
+        resultString += `${' '.repeat(outerSpaces)}${alpha[index]}${' '.repeat(middleSpaces)}${alpha[index]}${' '.repeat(outerSpaces)}\n`;
       }
     }
 
