@@ -1,57 +1,60 @@
 /*
-input: an integer
-output: a string containing the correct lyrics to the beer song at the integer
+input: a verse, or set of verses to be output of the bottles of beer song
+output: the verse(s) of the song in string format
 
-Examples: should have separate lyrics for when the beer runs out (number is zero)
-Also need to have a method that produces the entire song from 99 to 0.
+Examples: Verses can be supplied in a sequential range with the verses
+method instead of the verse method. The first element in the range must
+be higher than the second or end element as the beer count will decrement
+for every verse
 
-Data Structure: should use a separate variable to state the number decremented by 1
-towards the end of the verse. Should have a separate case for 1 and zero verses as their lyrics
-differ enough to warrant separate clauses.
+The last two verses of the song require different formatting from the rest of the song
 
-Algorithm: take verse or number of verses as argument
-create variable for newBeerCount, equal to verse number - 1
+Data Structure: for the whole song you can iterate downwards from 99 to 0. Use
+verses method on object with 99, 0 as arguments.
+Should create a variable for the standard case, as well as two other variables for the 1
+and 0 cases.
+Also create a variable for the current beer count and decrement it in the case of the verses
+function
 
-if verse number is 1
-  do no more bottles of beer on second half of verse
-else if verse number is 0
-  do no more bottles of beer on first half and go to the store on second half
-else 
-  use current verse number for first half, and then newBeerCount for the second
-  half of verse.
+Algorithm: first build out verse method. Declare variable for standard
+case, then create clauses for 1 and 0 with the appropriate strings.
+Insert the beer count in standard case and do -1 for the decrmented beer count.
+
+Then build out the verses method that will take the standard case and execute it each time
+for the range between the start and finish.
+
+Last create a static lyrics method that calls the verses method from 99 to 0.
 */
 
 class BeerSong {
   static verse(verseNum) {
-    let newBeerCount = verseNum - 1;
-
-    if (verseNum === 2) {
+    if (verseNum > 2) {
+      return `${verseNum} bottles of beer on the wall, ${verseNum} bottles of beer.\n` +
+      `Take one down and pass it around, ${verseNum - 1} bottles of beer ` +
+      "on the wall.\n";
+    } else if (verseNum === 2) {
       return "2 bottles of beer on the wall, 2 bottles of beer.\n" +
       "Take one down and pass it around, 1 bottle of beer " +
       "on the wall.\n";
     } else if (verseNum === 1) {
       return "1 bottle of beer on the wall, 1 bottle of beer.\n" +
       "Take it down and pass it around, no more bottles " +
-      "of beer on the wall.\n";
-    } else if (verseNum === 0) {
+      "of beer on the wall.\n"
+    } else {
       return "No more bottles of beer on the wall, no more " +
       "bottles of beer.\nGo to the store and buy some " +
       "more, 99 bottles of beer on the wall.\n";
-    } else {
-      return `${verseNum} bottles of beer on the wall, ${verseNum} bottles of beer.\n` +
-      `Take one down and pass it around, ${newBeerCount} bottles of beer ` +
-      "on the wall.\n"
     }
   }
 
   static verses(start, end) {
     let resultString = '';
 
-    for (let count = start; count >= end; count--) {
-      if (count === start) {
-        resultString += `${BeerSong.verse(count)}`;
+    for (let currentVerse = start; currentVerse >= end; currentVerse--) {
+      if (currentVerse === start) {
+        resultString += this.verse(currentVerse);
       } else {
-        resultString += `\n${BeerSong.verse(count)}`;
+        resultString += `\n${this.verse(currentVerse)}`;
       }
     }
 
@@ -59,20 +62,8 @@ class BeerSong {
   }
 
   static lyrics() {
-    let resultString = '';
-
-    for (let count = 99; count >= 0; count--) {
-      if (count === 99) {
-        resultString += `${BeerSong.verse(count)}`
-      } else {
-        resultString += `\n${BeerSong.verse(count)}`;
-      }
-    }
-
-    return resultString;
+    return this.verses(99, 0);
   }
 }
-
-console.log(BeerSong.verses(2, 0));
 
 module.exports = BeerSong;
