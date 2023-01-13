@@ -74,3 +74,73 @@ class Robot {
 }
 
 module.exports = Robot;
+
+// ALTERNATE SOLUTION
+
+/*
+input: no specific input required
+output: a random name that starts with two all caps letters
+and ends with three digits (should be a string)
+
+Examples: The name must "stick" to the robot object after it is generated
+Different robots need to have different names and cannot take the same
+name as one already used by another robot. A reset method also needs
+to be included to reset the robot to factory settings (should remove taken name)
+
+Data Structure: create a static array on the constructor for taken names.
+The constructor itself should give the robot a random name, and the name method
+should simply return that property
+Reset should transform the robot's name to an empty string, and then the name call
+should give the robot another name.
+*/
+
+// class Robot {
+//   static TAKEN_NAMES = [];
+
+//   static generateRandomName() {
+//     let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//     let numbers = '0123456789';
+//     let resultString = '';
+
+//     for (let count = 1; count <= 2; count++) {
+//       let randomIndex = Math.floor(Math.random() * letters.length);
+//       resultString += letters[randomIndex];
+//     }
+
+//     for (let count = 1; count <= 3; count++) {
+//       let randomIndex = Math.floor(Math.random() * numbers.length);
+//       resultString += numbers[randomIndex];
+//     }
+
+//     return resultString;
+//   }
+
+//   constructor() {
+//     let randomName = Robot.generateRandomName();
+//     while (Robot.TAKEN_NAMES.includes(randomName)) {
+//       randomName = Robot.generateRandomName();
+//     }
+
+//     this.string = randomName;
+//     Robot.TAKEN_NAMES.push(this.string);
+//   }
+
+//   name() {
+//     if (this.string) {
+//       return this.string;
+//     } else {
+//       this.string = Robot.generateRandomName();
+//       Robot.TAKEN_NAMES.push(this.string);
+//       return this.string;
+//     }
+//   }
+
+//   reset() {
+//     if (this.string) {
+//       Robot.TAKEN_NAMES.splice(Robot.TAKEN_NAMES.indexOf(this.string), 1);
+//       this.string = '';
+//     }
+//   }
+// }
+
+// module.exports = Robot;
