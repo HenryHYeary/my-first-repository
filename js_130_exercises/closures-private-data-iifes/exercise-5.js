@@ -1,4 +1,4 @@
-const LETTERS_AND_NUMS = 'abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+const LETTERS_AND_NUMS = 'abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
 function setDisplayName() {
   return function() {
