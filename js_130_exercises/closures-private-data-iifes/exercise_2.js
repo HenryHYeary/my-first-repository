@@ -25,4 +25,4 @@ function myBind2(func, context, ...args) {
 
 let addFive2 = myBind(addNumbers, null, 5);
 
-console.log(addFive(10));
+console.log(addFive2(10));
