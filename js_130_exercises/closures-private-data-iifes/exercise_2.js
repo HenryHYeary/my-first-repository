@@ -15,3 +15,14 @@ function addNumbers(a, b) {
 let addFive = myBind(addNumbers, null, 5);
 
 console.log(addFive(10));
+
+function myBind2(func, context, ...args) {
+  return function(...secondArgs) {
+    let fullArgs = args.concat(secondArgs);
+    return func.apply(context, fullArgs);
+  }
+}
+
+let addFive2 = myBind(addNumbers, null, 5);
+
+console.log(addFive(10));
