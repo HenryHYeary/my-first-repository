@@ -10,10 +10,11 @@ let client = new Client({
 
 const { argv } = require('node:process');
 
-async function list() {
-  await client.connect();
+async function listExpenses() {
+  await client.connect().catch(error => logAndExit(error));
 
-  let res = await client.query(`SELECT * FROM expenses ORDER BY created_on`);
+  let res = await client.query(`SELECT * FROM expenses ORDER BY created_on`)
+                          .catch(error => logAndExit(error));
 
   res.rows.forEach(row => {
     let columns = [
@@ -26,7 +27,18 @@ async function list() {
     console.log(columns.join(' | '));
   });
   
-  await client.end();
+  await client.end().catch(error => logAndExit(error));
+};
+
+async function addExpenses(amount, memo) {
+  await client.connect().catch(error => logAndExit(error));
+  let date = new Date();
+  date = date.toLocaleDateString();
+  
+  await client.query(`INSERT INTO expenses (amount, memo, created_on)
+  VALUES (${amount}, '${memo}' , '${date}')`).catch(error => logAndExit(error));
+
+  await client.end().catch(error => logAndExit(error));
 };
 
 function help() {
@@ -42,10 +54,23 @@ delete NUMBER - remove expense with id NUMBER
 search QUERY - list expenses with a matching memo field`);
 };
 
+function logAndExit(err) {
+  console.log(err);
+  process.exit(1);
+}
+
 let command = argv[2];
 
 if (command === 'list') {
-  list()
+  listExpenses();
+} else if (command === 'add') {
+  let amount = argv[3];
+  let memo = argv[4];
+  if (amount && memo) {
+    addExpenses(amount, memo);
+  } else {
+    console.log('You must provide an amount and memo.');
+  }
 } else {
   help();
 }
