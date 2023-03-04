@@ -1,49 +1,9 @@
 #!/usr/bin/env node
 
 const { Client } = require('pg');
-let client = new Client({ 
-  host: "/var/run/postgresql",
-  port: 5432,
-  user: "henmo",
-  database: "expenses" 
-});
 
-const { argv } = require('node:process');
-
-async function listExpenses() {
-  await client.connect().catch(error => logAndExit(error));
-
-  let res = await client.query(`SELECT * FROM expenses ORDER BY created_on`)
-                          .catch(error => logAndExit(error));
-
-  res.rows.forEach(row => {
-    let columns = [
-      String(row.id).padStart(3),
-      row.created_on.toDateString().padStart(10),
-      row.amount.padStart(12),
-      row.memo
-    ];
-
-    console.log(columns.join(' | '));
-  });
-  
-  await client.end().catch(error => logAndExit(error));
-};
-
-async function addExpenses(amount, memo) {
-  await client.connect().catch(error => logAndExit(error));
-  let date = new Date();
-  date = date.toLocaleDateString();
-  
-  await client.query(`INSERT INTO expenses (amount, memo, created_on)
-  VALUES (${amount}, '${memo}' , '${date}')`).catch(error => logAndExit(error));
-
-  await client.end().catch(error => logAndExit(error));
-};
-
-function help() {
-  console.log(
-`An expense recording system
+const PROCESS = require('process');
+const help = `An expense recording system
   
 Commands:
   
@@ -51,26 +11,93 @@ add AMOUNT MEMO [DATE] - record a new expense
 clear - delete all expenses
 list - list all expenses
 delete NUMBER - remove expense with id NUMBER
-search QUERY - list expenses with a matching memo field`);
-};
+search QUERY - list expenses with a matching memo field`;
 
 function logAndExit(err) {
   console.log(err);
   process.exit(1);
 }
 
-let command = argv[2];
-
-if (command === 'list') {
-  listExpenses();
-} else if (command === 'add') {
-  let amount = argv[3];
-  let memo = argv[4];
-  if (amount && memo) {
-    addExpenses(amount, memo);
-  } else {
-    console.log('You must provide an amount and memo.');
+class ExpenseData {
+  constructor() {
+    this.client = new Client({ 
+      host: "/var/run/postgresql",
+      port: 5432,
+      user: "henmo",
+      database: "expenses" 
+    });
   }
-} else {
-  help();
+
+  async listExpenses() {
+    await this.client.connect().catch(error => logAndExit(error));
+
+    let text = `SELECT * FROM expenses ORDER BY created_on`
+
+    await this.client.query(text)
+                .then(res =>
+                  res.rows.forEach(row => {
+                  let columns = [
+                    String(row.id).padStart(3),
+                    row.created_on.toDateString().padStart(10),
+                    row.amount.padStart(12),
+                    row.memo
+                  ];
+              
+                  console.log(columns.join(' | '));
+                }))
+                .catch(error => logAndExit(error));
+    
+    await this.client.end().catch(error => logAndExit(error));
+  };
+
+  async addExpense(amount, memo) {
+    await this.client.connect().catch(error => logAndExit(error));
+    let date = new Date();
+    date = date.toLocaleDateString();
+  
+    let text = `INSERT INTO expenses (amount, memo, created_on)
+    VALUES ($1, $2, $3)`;
+    let values = [amount, String(memo), String(date)];
+    
+    await this.client.query(text, values)
+                  .then().catch(error => logAndExit(error));
+  
+    await this.client.end().catch(error => logAndExit(error));
+  };
 }
+
+class CLI {
+  constructor() {
+    this.data = new ExpenseData();
+  }
+
+  static HELP() {
+    return help;
+  }
+
+  displayHelp() {
+    console.log(CLI.HELP());
+  }
+
+  run(argArr) {
+    let command = argArr[2];
+
+    if (command === 'list') {
+      this.data.listExpenses();
+    } else if (command === 'add') {
+      let amount = argArr[3];
+      let memo = argArr[4];
+      if (amount && memo) {
+        this.data.addExpense(amount, memo);
+      } else {
+        console.log('You must provide an amount and memo.');
+      }
+    } else {
+      this.displayHelp();
+    }
+  }
+}
+
+let cli = new CLI();
+
+cli.run(PROCESS.argv);
