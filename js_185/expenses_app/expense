@@ -28,12 +28,9 @@ class ExpenseData {
     });
   }
 
-  async listExpenses() {
+  async displayExpenses(text, value) {
     await this.client.connect().catch(error => logAndExit(error));
-
-    let text = `SELECT * FROM expenses ORDER BY created_on`
-
-    await this.client.query(text)
+    await this.client.query(text, value)
                 .then(res =>
                   res.rows.forEach(row => {
                   let columns = [
@@ -50,6 +47,12 @@ class ExpenseData {
     await this.client.end().catch(error => logAndExit(error));
   };
 
+  async listExpenses() {
+    let text = `SELECT * FROM expenses ORDER BY created_on`
+
+    this.displayExpenses(text);
+  };
+
   async addExpense(amount, memo) {
     await this.client.connect().catch(error => logAndExit(error));
     let date = new Date();
@@ -60,10 +63,36 @@ class ExpenseData {
     let values = [amount, String(memo), String(date)];
     
     await this.client.query(text, values)
-                  .then().catch(error => logAndExit(error));
+                  .catch(error => logAndExit(error));
   
     await this.client.end().catch(error => logAndExit(error));
   };
+
+  async searchExpenses(memo) {
+    let text = `SELECT * FROM expenses WHERE memo ILIKE $1`
+    let value = [`%${memo}%`];
+
+    this.displayExpenses(text, value);
+  };
+
+  async deleteExpense(id) {
+    await this.client.connect().catch(error => logAndExit(error));
+
+    let text1 = `SELECT * FROM expenses WHERE id = $1`;
+    let text2 = `DELETE FROM expenses WHERE id = $1`;
+    let value = [String(id)];
+
+    let res = await this.client.query(text1, value).catch(error => logAndExit(error));
+
+    if (res.rowCount === 0) {
+      console.log(`There is no expense with the id '${value}'.`);
+    } else {
+      console.log(`The following expense has been deleted:\n`);
+      await this.client.query(text2, value).catch(error => logAndExit(error));
+    }
+
+    await this.client.end().catch(error => logAndExit(error));
+  }
 }
 
 class CLI {
@@ -91,6 +120,20 @@ class CLI {
         this.data.addExpense(amount, memo);
       } else {
         console.log('You must provide an amount and memo.');
+      }
+    } else if (command === 'search') {
+      let memo = argArr[3];
+      if (memo) {
+        this.data.searchExpenses(memo);
+      } else {
+        console.log('You must provide a memo.');
+      }
+    } else if (command === 'delete') {
+      let id = argArr[3];
+      if (id) {
+        this.data.deleteExpense(id);
+      } else {
+        console.log('You must provide an id.');
       }
     } else {
       this.displayHelp();
