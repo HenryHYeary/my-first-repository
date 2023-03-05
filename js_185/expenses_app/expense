@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { Client } = require('pg');
+const READLINE = require('readline');
 
 const PROCESS = require('process');
 const help = `An expense recording system
@@ -28,7 +29,21 @@ class ExpenseData {
     });
   }
 
-  async displayExpenses(expenses) {
+  displayCount(rowCount) {
+    if (rowCount === 0) {
+      console.log(`There are no expenses.`);
+    } else if (rowCount === 1) {
+      console.log(`There is 1 expense.`);
+    } else {
+      console.log(`There are ${rowCount} expenses.`);
+    }
+  };
+
+  displayTotal(expenses) {
+    
+  }
+
+  displayExpenses(expenses) {
     expenses.forEach(row => {
       let columns = [
         String(row.id).padStart(3),
@@ -37,8 +52,9 @@ class ExpenseData {
         row.memo
       ];
 
-      console.log(columns.join(' | '));
-    })
+      let totalString = columns.join(' | ');
+      console.log(totalString);
+    });
   };
 
   async listExpenses() {
@@ -47,6 +63,7 @@ class ExpenseData {
 
     let res = await this.client.query(text).catch(error => logAndExit(error));
 
+    this.displayCount(res.rowCount);
     this.displayExpenses(res.rows);
 
     await this.client.end().catch(error => logAndExit(error));
@@ -74,6 +91,7 @@ class ExpenseData {
 
     let res = await this.client.query(text, value).catch(error => logAndExit(error));
 
+    this.displayCount(res.rowCount);
     this.displayExpenses(res.rows);
 
     this.client.end().catch(error => logAndExit(error));
@@ -95,6 +113,15 @@ class ExpenseData {
       this.displayExpenses(res.rows);
       await this.client.query(text2, value).catch(error => logAndExit(error));
     }
+
+    await this.client.end().catch(error => logAndExit(error));
+  }
+
+  async clearExpenses() {
+    await this.client.connect().catch(error => logAndExit(error));
+    let text = `DELETE FROM expenses`;
+
+    await this.client.query(text).catch(error => logAndExit(error));
 
     await this.client.end().catch(error => logAndExit(error));
   }
@@ -140,6 +167,18 @@ class CLI {
       } else {
         console.log('You must provide an id.');
       }
+    } else if (command === 'clear') {
+      let rl = READLINE.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      let questionText = `This will remove all expenses. Are you sure? (y/n) `;
+      rl.question(questionText, (answer) => {
+        if (answer.toLowerCase() === 'y') {
+          this.data.clearExpenses();
+        }
+        rl.close();
+      });
     } else {
       this.displayHelp();
     }
