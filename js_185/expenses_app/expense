@@ -28,29 +28,28 @@ class ExpenseData {
     });
   }
 
-  async displayExpenses(text, value) {
-    await this.client.connect().catch(error => logAndExit(error));
-    await this.client.query(text, value)
-                .then(res =>
-                  res.rows.forEach(row => {
-                  let columns = [
-                    String(row.id).padStart(3),
-                    row.created_on.toDateString().padStart(10),
-                    row.amount.padStart(12),
-                    row.memo
-                  ];
-              
-                  console.log(columns.join(' | '));
-                }))
-                .catch(error => logAndExit(error));
-    
-    await this.client.end().catch(error => logAndExit(error));
+  async displayExpenses(expenses) {
+    expenses.forEach(row => {
+      let columns = [
+        String(row.id).padStart(3),
+        row.created_on.toDateString().padStart(10),
+        row.amount.padStart(12),
+        row.memo
+      ];
+
+      console.log(columns.join(' | '));
+    })
   };
 
   async listExpenses() {
+    await this.client.connect().catch(error => logAndExit(error));
     let text = `SELECT * FROM expenses ORDER BY created_on`
 
-    this.displayExpenses(text);
+    let res = await this.client.query(text).catch(error => logAndExit(error));
+
+    this.displayExpenses(res.rows);
+
+    await this.client.end().catch(error => logAndExit(error));
   };
 
   async addExpense(amount, memo) {
@@ -69,10 +68,15 @@ class ExpenseData {
   };
 
   async searchExpenses(memo) {
-    let text = `SELECT * FROM expenses WHERE memo ILIKE $1`
+    await this.client.connect().catch(error => logAndExit(error));
+    let text = `SELECT * FROM expenses WHERE memo ILIKE $1`;
     let value = [`%${memo}%`];
 
-    this.displayExpenses(text, value);
+    let res = await this.client.query(text, value).catch(error => logAndExit(error));
+
+    this.displayExpenses(res.rows);
+
+    this.client.end().catch(error => logAndExit(error));
   };
 
   async deleteExpense(id) {
@@ -87,7 +91,8 @@ class ExpenseData {
     if (res.rowCount === 0) {
       console.log(`There is no expense with the id '${value}'.`);
     } else {
-      console.log(`The following expense has been deleted:\n`);
+      console.log(`The following expense has been deleted:`);
+      this.displayExpenses(res.rows);
       await this.client.query(text2, value).catch(error => logAndExit(error));
     }
 
