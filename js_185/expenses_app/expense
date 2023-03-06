@@ -2,6 +2,7 @@
 
 const { Client } = require('pg');
 const READLINE = require('readline');
+const fs = require('fs');
 
 const PROCESS = require('process');
 const help = `An expense recording system
@@ -27,6 +28,17 @@ class ExpenseData {
       user: "henmo",
       database: "expenses" 
     });
+  };
+
+  async createTableIfNone() {
+    let text1 = `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'expenses'`;
+    let text2 = fs.readFileSync('schema.sql').toString();
+
+    let res = await this.client.query(text1).catch(error => logAndExit(error));
+
+    if (res.rows[0].count === '0') {
+      await this.client.query(text2).catch(error => logAndExit(error));
+    }
   }
 
   displayCount(rowCount) {
@@ -38,10 +50,6 @@ class ExpenseData {
       console.log(`There are ${rowCount} expenses.`);
     }
   };
-
-  displayTotal(expenses) {
-    
-  }
 
   displayExpenses(expenses) {
     expenses.forEach(row => {
@@ -57,20 +65,49 @@ class ExpenseData {
     });
   };
 
+  calcualteTotal(expenses) {
+    let total = 0;
+
+    expenses.forEach(row => {
+      total += Number(row.amount);
+    });
+
+    return total;
+  };
+
+  displayTotal(expenses) {
+    if (expenses.length !== 0) {
+      let lastRow = expenses[expenses.length - 1];
+      let columns = [
+        String(lastRow.id).padStart(3),
+        lastRow.created_on.toDateString().padStart(10),
+        lastRow.amount.padStart(12),
+        lastRow.memo
+      ];
+
+      let totalString = columns.join(' | ');
+      console.log(`${'-'.repeat(totalString.length)}`);
+      console.log(`Total${this.calcualteTotal(expenses).toFixed(2).padStart(31)}`);
+    }
+  };
+
   async listExpenses() {
     await this.client.connect().catch(error => logAndExit(error));
+    await this.createTableIfNone().catch(error => logAndExit(error));
     let text = `SELECT * FROM expenses ORDER BY created_on`
 
     let res = await this.client.query(text).catch(error => logAndExit(error));
 
     this.displayCount(res.rowCount);
     this.displayExpenses(res.rows);
+    this.displayTotal(res.rows);
 
     await this.client.end().catch(error => logAndExit(error));
   };
 
   async addExpense(amount, memo) {
     await this.client.connect().catch(error => logAndExit(error));
+    await this.createTableIfNone().catch(error => logAndExit(error));
     let date = new Date();
     date = date.toLocaleDateString();
   
@@ -86,6 +123,7 @@ class ExpenseData {
 
   async searchExpenses(memo) {
     await this.client.connect().catch(error => logAndExit(error));
+    await this.createTableIfNone().catch(error => logAndExit(error));
     let text = `SELECT * FROM expenses WHERE memo ILIKE $1`;
     let value = [`%${memo}%`];
 
@@ -93,12 +131,14 @@ class ExpenseData {
 
     this.displayCount(res.rowCount);
     this.displayExpenses(res.rows);
+    this.displayTotal(res.rows);
 
     this.client.end().catch(error => logAndExit(error));
   };
 
   async deleteExpense(id) {
     await this.client.connect().catch(error => logAndExit(error));
+    await this.createTableIfNone().catch(error => logAndExit(error));
 
     let text1 = `SELECT * FROM expenses WHERE id = $1`;
     let text2 = `DELETE FROM expenses WHERE id = $1`;
@@ -119,6 +159,8 @@ class ExpenseData {
 
   async clearExpenses() {
     await this.client.connect().catch(error => logAndExit(error));
+    await this.createTableIfNone().catch(error => logAndExit(error));
+
     let text = `DELETE FROM expenses`;
 
     await this.client.query(text).catch(error => logAndExit(error));
