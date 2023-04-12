@@ -68,19 +68,20 @@ function longestSentence(text) {
   let sentences = separateSentences(text);
 
   let wordCounts = sentences.map(sentence => {
-    return sentence.split(' ').length;
+    return sentence.split(/\s+/).length;
   });
 
   let highestWordCount = Math.max(...wordCounts);
   let indexOfHighestWordCount = wordCounts.indexOf(highestWordCount);
 
-  return `${sentences[indexOfHighestWordCount]}\n\nThe longest sentence has` +
-  ` ${highestWordCount} words.`;
+  console.log(`${sentences[indexOfHighestWordCount]}\n\nThe longest sentence has` +
+  ` ${highestWordCount} words.`);
 }
 
 function separateSentences(text) {
   return text.match(/\w.*?[.?!]/g);
 }
 
-console.log(longestSentence(longText));
-console.log(longestSentence(longText2));
+longestSentence(longText);
+longestSentence(longText2);
+longestSentence("Hello there! Why  not? Goodbye.");
