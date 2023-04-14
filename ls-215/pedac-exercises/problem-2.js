@@ -91,7 +91,7 @@ return true or false based on whether or not the number is evenly divisible by 1
 
 // More succinct solution if no 4 digit requirement
 function isValidLuhn(string) {
-  let onlyDigits = string.replace(/\D+/g, '');
+  let onlyDigits = string.replace(/\D+/g, '').split('').reverse('').join('');
   
   let mappedString = doubleMap(onlyDigits);
   let totalChecksum = mappedString.split('').reduce((sum, next) => {
@@ -105,7 +105,7 @@ function doubleMap(string) {
   let newString = '';
 
   for (let index = 0; index < string.length; index++) {
-    if (index % 2 === 0) {
+    if (index % 2 === 1) {
       let newNum = Number(string[index]) * 2
       if (newNum >= 10) newNum = newNum - 9;
       newString += newNum;
@@ -123,3 +123,32 @@ log(isValidLuhn('2323 2005 7766 3554')); // true
 log(isValidLuhn('1111')); // false
 log(isValidLuhn('8763')); // true
 log(isValidLuhn('4417 1234 5678 9113')) // true
+
+/*
+Write a function that can add a check digit to make the number valid per
+the Luhn formula and return the original number plus that digit.
+Given test case: "2323 2005 7766 3554" in response to "2323 2005 7766 355".
+
+*/
+
+function makeValidLuhn(string) {
+  if (isValidLuhn(string)) return string;
+
+  for (let addedNum = 0; addedNum <= 9; addedNum++) {
+    let newString = string + String(addedNum);
+    if (isValidLuhn(newString)) {
+      return newString;
+    }
+  }
+}
+
+
+log(makeValidLuhn('2323 2005 7766 355')); // '2323 2005 7766 3554'
+log(makeValidLuhn('2323 2005 7766 3557')); // 2323 2005 7766 35576
+log(makeValidLuhn('123')); // 1230
+log(makeValidLuhn('1111')); // 11114
+log(makeValidLuhn('2324')); // 23242
+log(makeValidLuhn('2323 2005 7766 3554'));
+log(makeValidLuhn('8763')); // 8763
+
+// CREATE YOUR OWN TEST CASES BEFORE MOVING TO DATA STRUCTURE AND ALGORITHM
