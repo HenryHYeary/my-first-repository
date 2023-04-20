@@ -18,9 +18,16 @@ Data Structure: should create a filtered version of the original string where al
 characters are removed (can use this as a reference later).
   - create an alphabet constant within the function. For both upper and lower alphabets
   - create an array of the indexes of the letters in the keyword that will serve as shift values
-  -
+  - separate out the string into an array
+  - create a variable to keep track of current idx in idx array as well.
 
-Algorithm: - 
+Algorithm: Iterate through main string, 
+          - if either the upper or lower alphabet contains the character
+            - look to idxArray created for the correct index of the keyword character
+              - find the index of that letter within the current alphabet, shift current character
+                using the value of the index and return that character as the mapped character (use caesar cipher function)
+
+              - join the array together again into a string and return the string
 */
 
 function caesarEncrypt(string, shift) {
@@ -69,7 +76,27 @@ function createIdxArr(string, keyword) {
 }
 
 function vingenereEncrypt(string, keyword) {
+  keyword = keyword.toLowerCase();
+  const upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
 
+  let idxArr = createIdxArr(string, keyword);
+  let stringArr = string.split('');
+  let idxArrIndex = -1
+
+  return stringArr.map(char => {
+    if (upperAlpha.includes(char)) {
+      idxArrIndex += 1;
+      let shiftVal = lowerAlpha.indexOf(keyword[idxArr[idxArrIndex]]);
+      return caesarEncrypt(char, shiftVal);
+    } else if (lowerAlpha.includes(char)) {
+      idxArrIndex += 1;
+      let shiftVal = lowerAlpha.indexOf(keyword[idxArr[idxArrIndex]]);
+      return caesarEncrypt(char, shiftVal);
+    } else {
+      return char;
+    }
+  }).join('');
 }
 
 
@@ -77,11 +104,12 @@ let string = "Pineapples don't go on pizzas!".replace(/[^a-z]/gi, '');
 console.log(createIdxArr(string, "rails"));
 
 const log = console.log;
-// log(vingenereEncrypt("Pineapples don't go on pizzas!", "meat")); // Bmnxmtpeqw dhz'x gh ar pbldal!
-// log(vingenereEncrypt("Pineapples don't go on pizzas!", "A")); // Pineapples don't go on pizzas!
-// log(vingenereEncrypt("Pineapples don't go on pizzas!", "Aa")); // Pineapples don't go on pizzas!
-// log(vingenereEncrypt("Pineapples don't go on pizzas!", "cab")); // Riogaqrlfu dpp't hq oo riabat!
-// log(vingenereEncrypt("Dog", "Rabbit")) // Uoh
+log(vingenereEncrypt("Pineapples don't go on pizzas!", "meat")); // Bmnxmtpeqw dhz'x gh ar pbldal!
+log(vingenereEncrypt("Pineapples don't go on pizzas!", "A")); // Pineapples don't go on pizzas!
+log(vingenereEncrypt("Pineapples don't go on pizzas!", "Aa")); // Pineapples don't go on pizzas!
+log(vingenereEncrypt("Pineapples don't go on pizzas!", "cab")); // Riogaqrlfu dpp't hq oo riabat!
+log(vingenereEncrypt("Dog", "Rabbit")) // Uoh
+log(vingenereEncrypt("Pineapples don't go on pizzas!", "rails")); // Givpsgptpk uov'e yf ov aaqzid!
 
 /*
 plaintext: Pineapples don't go on pizzas!
