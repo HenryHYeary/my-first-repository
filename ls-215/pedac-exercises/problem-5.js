@@ -109,29 +109,82 @@ function encode(string, rails) {
     substringArr.push('');
   }
 
-  for (let index = 0; index < rails; index++) {
-    substringArr[index] = substringArr[index].concat(formattedString[index]);
-  }
+  let idxArray = getIdxNumbers(formattedString.length, rails);
 
-  return substringArr
+  formattedString.split('').forEach((letter, index) => {
+    substringArr[idxArray[index]] = substringArr[idxArray[index]].concat(letter);
+  }); 
+
+  return substringArr.join('');
 }
 
-// endIdx represents final array index, remaining length is remaining
-// length in main string
-// needs to create a window of iteration for the remaining string characters
-// How to create nested iteration conditions during window? (nested loop? subfunction?)
-function switchUpwards(nestedArr, endIdx, string) {
-  let iterationStart = endIdx - 1;
+/*
+input: encoded string, and number of rails
+output: the string in decoded form
 
-  let remainingIterationLength = string.length - endIdx;
-  if (remainingIterationLength > iterationStart) {
-    for (let index = endIdx; index < remainingIterationLength; index++) {
+Example: inverse of encoding problem
 
+Data Structure:  - make a formatted version of the string for decoding purposes
+                  same rules as last problem
+                  - create a result string to progressively add on characters to
+                  - 
+*/
+
+// log(decode('FUNAOTARM', 3)); // FAROUTMAN
+// log(decode('WTHUACOT', 2)); // WATCHOUT
+// log(decode('HIAALPRSPTY', 5)); // HAPPYTRAILS
+// log(decode('HRATAPYISPL', 4)); // HAPPYTRAILS
+// log(decode('fun aot arm', 3)); // FAROUTMAN
+
+function decode(string, rails) {
+  let formattedString = string.replace(/\s+/g, '').toUpperCase();
+}
+
+/*
+input: the length of the string, as well as the number of rails
+both integers
+output: correct sequence of indexes to push the letters into (or concat in the case of a string)
+
+Examples: "FAROUTMAN" (length of 9), 3: return value should be [0, 1, 2, 1, 0, 1, 2, 1, 0]
+Key concept here is "oscillation" up and down
+
+Data Structure: one variable(?) equal to the number of rails - 1, iterate up to this point
+              - change flag when point is reached to go down. When zero is reached, go up again
+              - repeat sequence until it matches the length of the original string.
+              - Also need an array to push these values into
+              - Also need to keep track of the length of the result array, terminate while
+              loop once the length has been reached
+              - Another variable to keep track of the specific index to be pushed
+              to the result array
+
+Algorithm: - start out at 0 and increment upwards until we reach the upper limit
+            - pushing these index numbers to result array all the while, when it
+            reaches the top, then go down. When it reaches the bottom then go up.
+            - as said above terminate while loop and sequence when array length is equal
+            to the length of the string.
+*/
+
+function getIdxNumbers(stringLength, rails) {
+  let top = rails - 1;
+  let resultArr = [0];
+
+  let goingUp = false;
+  let resultIdx = 0;
+  for (let index = 1; index < stringLength; index++) {
+    if (resultIdx === 0 || resultIdx === top) {
+      goingUp = !goingUp;
+    }
+
+    if (goingUp) {
+      resultIdx++
+      resultArr.push(resultIdx);
+    } else {
+      resultIdx--
+      resultArr.push(resultIdx);
     }
   }
+
+  return resultArr;
 }
 
-// this makes finding the right character to concat difficult
-function concatToSubArr(subArrIdx, stringIdx, string,  nestedArr) {
-  nestedArr[subArrIdx] = nestedArr[subArrIdx].concat(string[stringIdx]);
-}
+// console.log(getIdxNumbers(9, 3));
