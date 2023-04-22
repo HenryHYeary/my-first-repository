@@ -30,86 +30,86 @@ Algorithm: Iterate through main string,
               - join the array together again into a string and return the string
 */
 
-function caesarEncrypt(string, shift) {
-  const upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
+// function caesarEncrypt(string, shift) {
+//   const upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//   const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
 
-  let stringArr = string.split('');
+//   let stringArr = string.split('');
 
-  let encodedStringArr = stringArr.map((char) => {
-    if (upperAlpha.includes(char)) {
-      return encryptLetter(char, shift, upperAlpha);
-    } else if (lowerAlpha.includes(char)) {
-      return encryptLetter(char, shift, lowerAlpha);
-    } else {
-      return char;
-    }
-  });
+//   let encodedStringArr = stringArr.map((char) => {
+//     if (upperAlpha.includes(char)) {
+//       return encryptLetter(char, shift, upperAlpha);
+//     } else if (lowerAlpha.includes(char)) {
+//       return encryptLetter(char, shift, lowerAlpha);
+//     } else {
+//       return char;
+//     }
+//   });
 
-  return encodedStringArr.join('');
-}
+//   return encodedStringArr.join('');
+// }
 
-function encryptLetter(letter, shift, alphabet) {
-  const letterPos = alphabet.indexOf(letter);
+// function encryptLetter(letter, shift, alphabet) {
+//   const letterPos = alphabet.indexOf(letter);
 
-  for (let step = 1; step <= shift; step++) {
-    if (!alphabet[letterPos + step]) {
-      alphabet += alphabet;
-    }
+//   for (let step = 1; step <= shift; step++) {
+//     if (!alphabet[letterPos + step]) {
+//       alphabet += alphabet;
+//     }
 
-    letter = alphabet[letterPos + step];
-  }
+//     letter = alphabet[letterPos + step];
+//   }
 
-  return letter
-}
+//   return letter
+// }
 
-function createIdxArr(string, keyword) {
-  let resultArr = [0];
-  let keywordIdx = 0;
-  for (let index = 0; index < string.length; index++) {
-    keywordIdx++
-    resultArr.push(keywordIdx);
-    if (keywordIdx === keyword.length - 1) keywordIdx = -1;
-  }
+// function createIdxArr(string, keyword) {
+//   let resultArr = [0];
+//   let keywordIdx = 0;
+//   for (let index = 0; index < string.length; index++) {
+//     keywordIdx++
+//     resultArr.push(keywordIdx);
+//     if (keywordIdx === keyword.length - 1) keywordIdx = -1;
+//   }
 
-  return resultArr;
-}
+//   return resultArr;
+// }
 
-function vigenereEncrypt(string, keyword) {
-  keyword = keyword.toLowerCase();
-  const upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
+// function vigenereEncrypt(string, keyword) {
+//   keyword = keyword.toLowerCase();
+//   const upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//   const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
 
-  let idxArr = createIdxArr(string, keyword);
-  let stringArr = string.split('');
-  let idxArrIndex = -1
+//   let idxArr = createIdxArr(string, keyword);
+//   let stringArr = string.split('');
+//   let idxArrIndex = -1
 
-  return stringArr.map(char => {
-    if (upperAlpha.includes(char)) {
-      idxArrIndex += 1;
-      let shiftVal = lowerAlpha.indexOf(keyword[idxArr[idxArrIndex]]);
-      return caesarEncrypt(char, shiftVal);
-    } else if (lowerAlpha.includes(char)) {
-      idxArrIndex += 1;
-      let shiftVal = lowerAlpha.indexOf(keyword[idxArr[idxArrIndex]]);
-      return caesarEncrypt(char, shiftVal);
-    } else {
-      return char;
-    }
-  }).join('');
-}
+//   return stringArr.map(char => {
+//     if (upperAlpha.includes(char)) {
+//       idxArrIndex += 1;
+//       let shiftVal = lowerAlpha.indexOf(keyword[idxArr[idxArrIndex]]);
+//       return caesarEncrypt(char, shiftVal);
+//     } else if (lowerAlpha.includes(char)) {
+//       idxArrIndex += 1;
+//       let shiftVal = lowerAlpha.indexOf(keyword[idxArr[idxArrIndex]]);
+//       return caesarEncrypt(char, shiftVal);
+//     } else {
+//       return char;
+//     }
+//   }).join('');
+// }
 
 
-let string = "Pineapples don't go on pizzas!".replace(/[^a-z]/gi, '');
-console.log(createIdxArr(string, "rails"));
+// let string = "Pineapples don't go on pizzas!".replace(/[^a-z]/gi, '');
+// console.log(createIdxArr(string, "rails"));
 
-const log = console.log;
-log(vigenereEncrypt("Pineapples don't go on pizzas!", "meat")); // Bmnxmtpeqw dhz'x gh ar pbldal!
-log(vigenereEncrypt("Pineapples don't go on pizzas!", "A")); // Pineapples don't go on pizzas!
-log(vigenereEncrypt("Pineapples don't go on pizzas!", "Aa")); // Pineapples don't go on pizzas!
-log(vigenereEncrypt("Pineapples don't go on pizzas!", "cab")); // Riogaqrlfu dpp't hq oo riabat!
-log(vigenereEncrypt("Dog", "Rabbit")) // Uoh
-log(vigenereEncrypt("Pineapples don't go on pizzas!", "rails")); // Givpsgptpk uov'e yf ov aaqzid!
+// const log = console.log;
+// log(vigenereEncrypt("Pineapples don't go on pizzas!", "meat")); // Bmnxmtpeqw dhz'x gh ar pbldal!
+// log(vigenereEncrypt("Pineapples don't go on pizzas!", "A")); // Pineapples don't go on pizzas!
+// log(vigenereEncrypt("Pineapples don't go on pizzas!", "Aa")); // Pineapples don't go on pizzas!
+// log(vigenereEncrypt("Pineapples don't go on pizzas!", "cab")); // Riogaqrlfu dpp't hq oo riabat!
+// log(vigenereEncrypt("Dog", "Rabbit")) // Uoh
+// log(vigenereEncrypt("Pineapples don't go on pizzas!", "rails")); // Givpsgptpk uov'e yf ov aaqzid!
 
 /*
 plaintext: Pineapples don't go on pizzas!
@@ -123,3 +123,19 @@ result: Givpsgptpk uov'e yf ov aaqzid!
 */
 
 // log(vigenereEncrypt("Pineapples don't go on pizzas!", "rails")); // Givpsgptpk uov'e yf ov aaqzid!
+
+// Book solution
+function vigenereEncrypt(plaintext, keyword) {
+  const upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerAlpha = 'abcdefghijklmnopqrstuvwxyz';
+  let cipher = '';
+  let keyPos = 0;
+  keyword = keyword.toUpperCase();
+  let key;
+
+  plaintext.split('').forEach(char => {
+    if (char >= 'A' && char <= 'Z') {
+      key = upperAlpha.indexOf(keyword[keyPos]);
+    }
+  })
+}
