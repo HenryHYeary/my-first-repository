@@ -56,7 +56,7 @@ function nodeSwap(firstNodeId, secondNodeId) {
   }
 }
 
-// Book solution
+// Book solution (loses event listeners from replaceChild)
 function nodeSwap(node1Id, node2Id) {
   const node1 = document.getElementById(node1Id);
   const node2 = document.getElementById(node2Id);
