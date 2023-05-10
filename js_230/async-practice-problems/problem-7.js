@@ -7,7 +7,7 @@ document.addEventListener("mousemove", (event) => {
   x.style.left = String(event.clientX) + "px";
 });
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keyup", (event) => {
   if (event.key === "b") {
     xVertical.style.background = "blue";
     xHorizontal.style.background = "blue";
@@ -22,4 +22,34 @@ document.addEventListener("keydown", (event) => {
     xVertical.style.background = "red";
     xHorizontal.style.background = "red";
   }
-})
+});
+
+// Book solution
+
+// document.addEventListener('mousemove', (event) => {
+//   let x = document.querySelector('.x');
+//   x.style.left = event.clientX.toString() + 'px';
+//   x.style.top = event.clientY.toString() + 'px';
+// });
+
+// document.addEventListener("keyup", (event) => {
+//   let key = event.key;
+//   let color;
+
+//   if (key === 'r') {
+//     color = 'red';
+//   } else if (key === 'g') {
+//     color = 'green';
+//   } else if (key === 'b') {
+//     color = 'blue';
+//   }
+
+//   if (color) {
+//     let x = document.querySelector('.x');
+//     let child;
+//     for (let index = 0; index < x.children.length; index++) {
+//       child = x.children[index];
+//       child.style.background = color;
+//     }
+//   }
+// });
