@@ -11,7 +11,6 @@
 .text-field .content {
   display: inline-block;
   height: 21px;
-  float: left;
   white-space: pre;
 }
 
