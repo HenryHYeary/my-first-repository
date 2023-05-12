@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("click", () => {
     clearInterval(cursorInterval);
+    cursorInterval = null;
     if (textField.classList.contains("focused")) {
       textField.classList.remove("focused");
       textField.classList.remove("cursor");
