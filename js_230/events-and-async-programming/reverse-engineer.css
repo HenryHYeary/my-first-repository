@@ -1,0 +1,14 @@
+div {
+  background-color: green; 
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+#inner {
+  background-color: blue;
+  height: 50px;
+  width: 50px;
+}
