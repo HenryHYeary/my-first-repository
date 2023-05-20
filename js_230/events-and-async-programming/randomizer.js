@@ -22,41 +22,76 @@ Algorithm: create a variable for argument length (arguments array.length)
           - clear interval after all callbacks have been processed
 */
 
-function randomizer(...callbacks) {
-  let n = callbacks.length;
-  let secondCounter = 0;
-  let maxSeconds = 2 * n;
+// function randomizer(...callbacks) {
+//   let n = callbacks.length;
+//   let secondCounter = 0;
+//   let maxSeconds = 2 * n;
 
-  let intervalId = setInterval(() => {
-    secondCounter += 1;
-    console.log(secondCounter);
+//   let intervalId = setInterval(() => {
+//     secondCounter += 1;
+//     console.log(secondCounter);
 
-    if (secondCounter >= maxSeconds) {
-      clearInterval(intervalId);
-    }
-  }, 1000);
+//     if (secondCounter >= maxSeconds) {
+//       clearInterval(intervalId);
+//     }
+//   }, 1000);
 
-  let promises = callbacks.map(callback => {
-    let randomTime = Math.floor(maxSeconds * Math.random() * 1000);
-    return new Promise((resolve, reject) => {
-      resolve = callback;
-      setTimeout(resolve, randomTime);
-    });
-  });
+//   let promises = callbacks.map(callback => {
+//     let randomTime = Math.floor(maxSeconds * Math.random() * 1000);
+//     return new Promise((resolve, reject) => {
+//       resolve = callback;
+//       setTimeout(resolve, randomTime);
+//     });
+//   });
 
-  Promise.all(promises).then();
-}
+//   Promise.all(promises).then();
+// }
+
+// function callback1() {
+//   console.log('callback1');
+// }
+
+// function callback2() {
+//   console.log('callback2');
+// }
+
+// function callback3() {
+//   console.log('callback3');
+// }
+
+// randomizer(callback1, callback2, callback3);
+
+// Second time through
 
 function callback1() {
-  console.log('callback1');
+  console.log("callback1");
 }
 
 function callback2() {
-  console.log('callback2');
+  console.log("callback2");
 }
 
 function callback3() {
-  console.log('callback3');
+  console.log("callback3");
+}
+
+function randomizer(...callbacks) {
+  let maxSeconds = callbacks.length * 2;
+  let secondCounter = 0;
+
+  callbacks.forEach(callback => {
+    let randomTime = Math.floor(Math.random() * maxSeconds);
+    setTimeout(callback, randomTime * 1000);
+  })
+
+  let interval = setInterval(() => {
+    secondCounter++;
+    console.log(secondCounter);
+
+    if (secondCounter >= maxSeconds) {
+      clearInterval(interval);
+    }
+  }, 1000)
 }
 
 randomizer(callback1, callback2, callback3);
