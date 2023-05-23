@@ -40,40 +40,63 @@ Algorithm: Find targetElement by id
 
 */
 
+// function domTreeTracer(elementId) {
+//   let targetNode = document.getElementById(elementId);
+//   let siblingsOfTarget = findSiblingsNoText(targetNode);
+//   let parentsArr = findParentsOf(targetNode);
+
+//   let siblingsOfParents = parentsArr.map(node => findSiblingsNoText(node));
+
+
+//   let allSiblings = [siblingsOfTarget].concat(siblingsOfParents);
+
+//   return allSiblings.map(subArr => {
+//     return subArr.map(node => node.tagName);
+//   });
+// }
+
+// function findParentsOf(node) {
+//   if (!node.parentNode) {
+//     return [];
+//   }
+
+//   let parent = node.parentNode;
+//   let parentsArr = [];
+
+//   while (parent.tagName !== "BODY") {
+//     parentsArr.push(parent);
+//     parent = parent.parentNode;
+//   }
+
+//   return parentsArr;
+// }
+
+// function findSiblingsNoText(node) {
+//   let parent = node.parentNode;
+//   let siblings = parent.childNodes;
+
+//   return [].slice.call(siblings).filter(node => node.nodeType !== 3) || [];
+// }
+
+// More efficient solution
+
 function domTreeTracer(elementId) {
-  let targetNode = document.getElementById(elementId);
-  let siblingsOfTarget = findSiblingsNoText(targetNode);
-  let parentsArr = findParentsOf(targetNode);
+  let element = document.getElementById(String(elementId));
+  let result = [];
 
-  let siblingsOfParents = parentsArr.map(node => findSiblingsNoText(node));
-
-
-  let allSiblings = [siblingsOfTarget].concat(siblingsOfParents);
-
-  return allSiblings.map(subArr => {
-    return subArr.map(node => node.tagName);
-  });
-}
-
-function findParentsOf(node) {
-  if (!node.parentNode) {
-    return [];
+  while (element.hasAttribute("id")) {
+      result.push(siblingsIncElement(element));
+      element = element.parentElement;
   }
 
-  let parent = node.parentNode;
-  let parentsArr = [];
-
-  while (parent.tagName !== "BODY") {
-    parentsArr.push(parent);
-    parent = parent.parentNode;
-  }
-
-  return parentsArr;
+  return result;
 }
 
-function findSiblingsNoText(node) {
-  let parent = node.parentNode;
-  let siblings = parent.childNodes;
+function siblingsIncElement(element) {
+  let parent = element.parentElement;
+  let allElements = parent.children;
 
-  return [].slice.call(siblings).filter(node => node.nodeType !== 3) || [];
+  return [...allElements].map(element => element.tagName);
 }
+
+console.log(domTreeTracer(22));
