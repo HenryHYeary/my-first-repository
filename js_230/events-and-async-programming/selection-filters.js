@@ -35,7 +35,7 @@ const CLASSIFICATION_OPTIONS = {
   "Bird": ["Ostrich"]
 };
 
-const ANIMAL_OPTIONS = {
+const ANIMALS = {
   'Bear': ['Vertebrate', 'Warm-blooded', 'Mammal'],
   'Turtle': ['Vertebrate', 'Cold-blooded'],
   'Whale': ['Vertebrate', 'Warm-blooded', 'Mammal'],
@@ -43,40 +43,89 @@ const ANIMAL_OPTIONS = {
   'Ostrich': ['Vertebrate', 'Warm-blooded', 'Bird'],
 };
 
-function unhideAll(animals, classifications) {
-  [animals, classifications].forEach(selection => {
-    [...selection.children].forEach(option => {
-      option.removeAttribute("hidden");
-    })
-  });
-}
+// function unhideAll(animals, classifications) {
+//   [animals, classifications].forEach(selection => {
+//     [...selection.children].forEach(option => {
+//       option.removeAttribute("hidden");
+//     })
+//   });
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const classifications = document.getElementById("animal-classifications");
+//   const animals = document.getElementById("animals");
+
+//   function hideOptions(targetValue, selectionType) {
+//     unhideAll(animals, classifications);
+//     let matchingOptions;
+
+//     if (selectionType.id === "animals") {
+//       matchingOptions = CLASSIFICATION_OPTIONS[targetValue];
+//     } else if (selectionType.id === "animal-classifications") {
+//       matchingOptions = ANIMAL_OPTIONS[targetValue];
+//     }
+
+//     [...selectionType.children].forEach(selectionOption => {
+//       if (!matchingOptions.includes(selectionOption.value)) {
+//         selectionOption.setAttribute("hidden", "true");
+//       }
+//     });
+//   }
+
+//   classifications.addEventListener("change", event => {
+//     hideOptions(event.target.value, animals);
+//   });
+
+//   animals.addEventListener("change", event => {
+//     hideOptions(event.target.value, classifications);
+//   });
+// });
+
+// Better solution
 
 document.addEventListener("DOMContentLoaded", () => {
-  const classifications = document.getElementById("animal-classifications");
-  const animals = document.getElementById("animals");
+  let animalClassifications = document.querySelector("#animal-classifications");
+  let animals = document.querySelector("#animals");
+  let clearButton = document.querySelector("#clear");
+  let options = document.querySelectorAll("option");
 
-  function hideOptions(targetValue, selectionType) {
-    unhideAll(animals, classifications);
-    let matchingOptions;
-
-    if (selectionType.id === "animals") {
-      matchingOptions = CLASSIFICATION_OPTIONS[targetValue];
-    } else if (selectionType.id === "animal-classifications") {
-      matchingOptions = ANIMAL_OPTIONS[targetValue];
-    }
-
-    [...selectionType.children].forEach(selectionOption => {
-      if (!matchingOptions.includes(selectionOption.value)) {
-        selectionOption.setAttribute("hidden", "true");
+  function unhideAll() {
+      for (let index = 0; index < options; index++) {
+          options[index].removeAttribute("hidden");
       }
-    });
   }
 
-  classifications.addEventListener("change", event => {
-    hideOptions(event.target.value, animals);
+  function unhideSelect(select) {
+      for (let index = 0; index < select.children.length; index++) {
+          select.children[index].removeAttribute("hidden");
+      }
+  }
+
+  animalClassifications.addEventListener("change", event => {
+      unhideSelect(animals);
+      let selected = animalClassifications.value;
+
+      for (let index = 0; index < animals.children.length; index++) {
+          let currentOption = animals.children[index];
+          if (!CLASSIFICATION_OPTIONS[selected].includes(currentOption.value)) {
+              currentOption.setAttribute("hidden", "true");
+          }
+      }
   });
 
   animals.addEventListener("change", event => {
-    hideOptions(event.target.value, classifications);
+      unhideSelect(animalClassifications)
+      let selected = animals.value;
+
+      for (let index = 0; index < animalClassifications.children.length; index++) {
+          let currentOption = animalClassifications.children[index];
+          if (!ANIMALS[selected].includes(currentOption.value)) {
+              currentOption.setAttribute("hidden", "true");
+          }
+      }
+  })
+
+  clearButton.addEventListener("click", (event) => {
+      unhideAll();
   });
 });
