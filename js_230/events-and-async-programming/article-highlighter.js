@@ -18,46 +18,79 @@ Data Structure: Should only have to define a single event listener for this exer
 Create one for the document as a whole.
 */
 
-document.addEventListener("DOMContentLoaded", () => {
-  function highlight({target}) {
-    let element;
-    let id;
+// Book Solution
 
-    removeHighlight();
+// document.addEventListener("DOMContentLoaded", () => {
+//   function highlight({target}) {
+//     let element;
+//     let id;
 
-    if (target.tagName === "A") {
-      id = target.href.match("#article-[0-9]+")[0];
-      element = document.querySelector(id);
-    } else {
-      element = document.querySelector("main");
-    }
+//     removeHighlight();
 
-    element.classList.add("highlight");
+//     if (target.tagName === "A") {
+//       id = target.href.match("#article-[0-9]+")[0];
+//       element = document.querySelector(id);
+//     } else {
+//       element = document.querySelector("main");
+//     }
+
+//     element.classList.add("highlight");
+//   }
+
+//   function removeHighlight() {
+//     const highlighted = document.querySelector(".highlight");
+//     if (highlighted) {
+//       highlighted.classList.remove("highlight");
+//     }
+//   }
+
+//   const nav = document.querySelector("header ul");
+//   const main = document.querySelector("main");
+
+//   nav.addEventListener("click", highlight);
+//   document.addEventListener("click", highlight);
+//   main.addEventListener("click", e => {
+//     e.preventDefault();
+//     let article = e.target;
+//     if (article.tagName !== "ARTICLE") {
+//       article = article.parentNode;
+//     }
+
+//     if (article.tagName === "ARTICLE") {
+//       e.stopPropagation();
+//       removeHighlight();
+//       article.classList.add("highlight");
+//     }
+//   });
+// });
+
+// Personal Solution
+
+document.addEventListener("click", event => {
+  let main = document.querySelector("main");
+  let highlight = document.querySelector(".highlight");
+  if (event.target.tagName === "A") {
+      if (highlight) clearHighlighting();
+      let articleId = event.target.href;
+      articleId = articleId.slice(articleId.indexOf("#"));
+      let targtetArticle = document.querySelector(articleId);
+      targtetArticle.classList.add("highlight");
+      return;
   }
 
-  function removeHighlight() {
-    const highlighted = document.querySelector(".highlight");
-    if (highlighted) {
-      highlighted.classList.remove("highlight");
-    }
+  if (event.target.tagName === "H2" || event.target.tagName === "P") {
+      if (highlight) clearHighlighting();
+      let parent = event.target.parentElement;
+      parent.classList.add("highlight");
+      return;
   }
 
-  const nav = document.querySelector("header ul");
-  const main = document.querySelector("main");
+  if (highlight) clearHighlighting();
+  main.classList.add("highlight");
+})
 
-  nav.addEventListener("click", highlight);
-  document.addEventListener("click", highlight);
-  main.addEventListener("click", e => {
-    e.preventDefault();
-    let article = e.target;
-    if (article.tagName !== "ARTICLE") {
-      article = article.parentNode;
-    }
+function clearHighlighting() {
+  let highlight = document.querySelector(".highlight");
 
-    if (article.tagName === "ARTICLE") {
-      e.stopPropagation();
-      removeHighlight();
-      article.classList.add("highlight");
-    }
-  });
-});
+  highlight.classList.remove("highlight");
+}
