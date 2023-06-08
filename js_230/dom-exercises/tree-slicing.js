@@ -44,28 +44,76 @@ Algorithm: - instantiate parentElement (getElementById(firstArg))
             - return the sliceArr
 */
 
-function sliceTree(startIdx, endIdx) {
-  let parentElement = document.getElementById(startIdx);
-  let targetChild = document.getElementById(endIdx);
+// function sliceTree(startIdx, endIdx) {
+//   let parentElement = document.getElementById(startIdx);
+//   let targetChild = document.getElementById(endIdx);
 
-  if (!parentElement || !targetChild) return undefined;
+//   if (!parentElement || !targetChild) return undefined;
 
-  let parentTagName = parentElement.tagName;
+//   let parentTagName = parentElement.tagName;
 
-  let sliceArr = [];
+//   let sliceArr = [];
 
-  let currentElement = targetChild;
+//   let currentElement = targetChild;
 
-  while (currentElement.tagName !== "HTML" &&
-        currentElement.tagName !== parentTagName) {
-          sliceArr.push(currentElement.tagName);
-          currentElement = currentElement.parentNode;
-          if (!currentElement) return undefined;
-        }
+//   while (currentElement.tagName !== "HTML" &&
+//         currentElement.tagName !== parentTagName) {
+//           sliceArr.push(currentElement.tagName);
+//           currentElement = currentElement.parentNode;
+//           if (!currentElement) return undefined;
+//         }
 
-  if (sliceArr[sliceArr.length - 1] === "BODY") return undefined;
+//   if (sliceArr[sliceArr.length - 1] === "BODY") return undefined;
 
-  sliceArr.push(parentTagName);
+//   sliceArr.push(parentTagName);
   
-  return sliceArr.reverse();
+//   return sliceArr.reverse();
+// }
+
+// Other personal solution
+
+/*
+input: a start index and an end index
+output: an array of tagNames representing the elements
+within the slice
+
+Examples: the first element must be a parent of the second
+or a parent of the parent of the second for the slice to be valid.
+We only care about element nodes.
+Can only slice if the element is a child of body.
+If either of the elements do not exist then return undefined.
+
+Data Structure: create a guard clause for if there is no parent child
+relationship. Create another guard clause for if the element is not
+a child of document.body. Create a guard clause for if either do not
+exist.
+Finally create an array to store all of the element tagNames.
+
+Algorithm: Push the tagName of the parent element
+            into the array, then get an array of the children
+            of the parent and filter out the element that contains
+            the target child element.
+
+            do this until the last child element is reached
+*/
+
+function sliceTree(startIdx, endIdx) {
+  let parentElement = document.getElementById(String(startIdx));
+  let childElement = document.getElementById(String(endIdx));
+
+  let slicedArr = [];
+
+  if (!parentElement || !childElement) return;
+
+  if (!document.body.contains(parentElement) || !document.body.contains(childElement)) return;
+
+  if (!parentElement.contains(childElement)) return;
+
+
+  while (parentElement) {
+      slicedArr.push(parentElement.tagName);
+      parentElement = [...parentElement.children].find(child => child.contains(childElement));
+  }
+
+  return slicedArr;
 }

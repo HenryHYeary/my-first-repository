@@ -29,58 +29,58 @@ Algorithm: Start with body element
 */
 
 // Recursive solution
-function nodesToArr(node = document.body) {
-  let childElements = [].slice.call(node.children).map(nodesToArr);
+// function nodesToArr(node = document.body) {
+//   let childElements = [].slice.call(node.children).map(nodesToArr);
 
-  return [
-    node.tagName,
-    childElements
-  ]
-}
+//   return [
+//     node.tagName,
+//     childElements
+//   ]
+// }
 
-// Book solution
-function nodesToArr() {
-  const nodesArray = ['BODY', formatNodes([].slice.call(document.body.children))];
-  let currentParentNodes = nodesArray[1];
+// // Book solution
+// function nodesToArr() {
+//   const nodesArray = ['BODY', formatNodes([].slice.call(document.body.children))];
+//   let currentParentNodes = nodesArray[1];
 
-  while (anyChildren(currentParentNodes)) {
-    currentParentNodes = getNextGenerationParents(currentParentNodes);
-  }
+//   while (anyChildren(currentParentNodes)) {
+//     currentParentNodes = getNextGenerationParents(currentParentNodes);
+//   }
 
-  getNextGenerationParents(currentParentNodes);
+//   getNextGenerationParents(currentParentNodes);
 
-  return nodesArray;
-}
+//   return nodesArray;
+// }
 
-function getNextGenerationParents(currentParentNodes) {
-  let newParentNodes = [];
-  currentParentNodes.forEach((parentNode, index, parentNodes) => {
-    parentNodes[index] = appendChildren(parentNode);
-    if (parentNodes[index][1].length > 0) {
-      newParentNodes = newParentNodes.concat(parentNodes[index][1]);
-    }
-  });
+// function getNextGenerationParents(currentParentNodes) {
+//   let newParentNodes = [];
+//   currentParentNodes.forEach((parentNode, index, parentNodes) => {
+//     parentNodes[index] = appendChildren(parentNode);
+//     if (parentNodes[index][1].length > 0) {
+//       newParentNodes = newParentNodes.concat(parentNodes[index][1]);
+//     }
+//   });
 
-  return newParentNodes;
-}
+//   return newParentNodes;
+// }
 
-function anyChildren(parentNodes) {
-  for (let index = 0; index < parentNodes.length; index++) {
-    if (parentNodes[index][0].children.length > 0) {
-      return true;
-    }
-  }
+// function anyChildren(parentNodes) {
+//   for (let index = 0; index < parentNodes.length; index++) {
+//     if (parentNodes[index][0].children.length > 0) {
+//       return true;
+//     }
+//   }
 
-  return false;
-}
+//   return false;
+// }
 
-function appendChildren(parentNode) {
-  const children = formatNodes([].slice.call(parentNode[0].children));
-  parentNode[0] = parentNode[0].tagName;
-  parentNode.push(children);
-  return parentNode;
-}
+// function appendChildren(parentNode) {
+//   const children = formatNodes([].slice.call(parentNode[0].children));
+//   parentNode[0] = parentNode[0].tagName;
+//   parentNode.push(children);
+//   return parentNode;
+// }
 
-function formatNodes(nodes) {
-  return nodes.map(node => [node]);
-}
+// function formatNodes(nodes) {
+//   return nodes.map(node => [node]);
+// }
