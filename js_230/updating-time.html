@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- <html lang="en-US">
+  <head>
+    <title>My Site</title>
+  </head>
+  <body>
+    <div>
+      Welcome to the site!<br>
+      The time is 10:14 am.<br>
+      You are logged in as <a href="/account">Kabu</a>
+    </div>
+  </body>
+  <script>
+    var div = document.querySelector("div");
+    var node;
+    var newText;
+
+    for (let index = 0; index < div.childNodes.length; index++) {
+      node = div.childNodes[index];
+      if (node instanceof Text && node.nodeValue.indexOf("The time is") !== -1) {
+        newText = node.nodeValue.replace(/\d{1,2}:\d{2} [ap]m/, '9:16 am');
+        node.nodeValue = newText;
+      }
+    }
+  </script>
+</html> -->
+
+<!-- VS -->
+
+<html>
+  <head>
+    <title>My Site</title>
+  </head>
+  <body>
+    <div>
+      Welcome to the site!<br>
+      The time is <span class="time">9:15 am</span>.<br>
+      You are logged in as <a href="/account">Kabu</a>
+    </div>
+  </body>
+  <script>
+    document.querySelector(".time").textContent = "9:16 am";
+  </script>
+</html>
