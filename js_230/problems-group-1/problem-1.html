@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>On the River</title>
+  </head>
+  <body>
+    <h1>On the River</h1>
+    <p>The sun is low</p>
+    <p>The waters flow</p>
+  </body>
+  <script>
+    function getElementsByTagName(tagName) {
+      let allElements = [];
+
+      walk(document.body, (node) => {
+        if (node.tagName === tagName.toUpperCase()) {
+          allElements.push(node);
+          node.classList.add("article-text");
+        }
+      });
+
+      return allElements;
+    }
+
+    function walk(node, callback) {
+      callback(node);
+
+      for (let index = 0; index < node.childNodes.length; index++) {
+        walk(node.childNodes[index], callback);
+      }
+    }
+
+    console.log(getElementsByTagName("p"));
+  </script>
+</html>

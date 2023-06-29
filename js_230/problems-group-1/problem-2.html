@@ -1,19 +1,7 @@
-<!-- <!doctype html>
+<!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <title>On the River</title>
-  </head>
-  <body>
-    <h1>On The River</h1>
-    <p>The sun is low</p>
-    <p>The waters flow</p>
-  </body>
-</html> -->
-
-<!doctype html>
-<html lang="en-US">
-  <head>
-    <title>On the River</title>
+    <title>On The River</title>
   </head>
   <body>
     <div id="page1">
@@ -35,4 +23,17 @@
       <p>The killdeer echoes loud and shrill.</p>
     </div>
   </body>
+  <script>
+    function addArticleText(node) {
+      if (node instanceof HTMLParagraphElement) {
+        node.setAttribute("class", "article-text");
+      }
+
+      for (let index = 0; index < node.childNodes.length; index++) {
+        addArticleText(node.childNodes[index]);
+      }
+    }
+
+    addArticleText(document.body);
+  </script>
 </html>
