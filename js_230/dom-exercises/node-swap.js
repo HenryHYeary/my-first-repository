@@ -97,27 +97,58 @@ Could potentially record parent element and next element sibling of each
 node to keep track of its place within the DOM tree
 */
 
-document.addEventListener("DOMContentLoaded", () => {
-  function swapNodes(firstId, secondId) {
-    let firstNode = document.getElementById(String(firstId));
-    let secondNode = document.getElementById(String(secondId));
+// Book solution
 
-    if (!firstNode || !secondNode) {
-      return;
-    }
+// document.addEventListener("DOMContentLoaded", () => {
+//   function swapNodes(firstId, secondId) {
+//     let firstNode = document.getElementById(String(firstId));
+//     let secondNode = document.getElementById(String(secondId));
 
-    if (firstNode.contains(secondNode) || secondNode.contains(firstNode)) {
-      return;
-    }
+//     if (!firstNode || !secondNode) {
+//       return;
+//     }
 
-    let firstNodeParent = firstNode.parentElement;
-    let secondNodeParent = secondNode.parentElement;
-    let firstNodeClone = firstNode.cloneNode(true);
-    let secondNodeClone = secondNode.cloneNode(true);
+//     if (firstNode.contains(secondNode) || secondNode.contains(firstNode)) {
+//       return;
+//     }
 
-    firstNodeParent.replaceChild(secondNodeClone, firstNode);
-    secondNodeParent.replaceChild(firstNodeClone, secondNode);
+//     let firstNodeParent = firstNode.parentElement;
+//     let secondNodeParent = secondNode.parentElement;
+//     let firstNodeClone = firstNode.cloneNode(true);
+//     let secondNodeClone = secondNode.cloneNode(true);
 
-    return true;
+//     firstNodeParent.replaceChild(secondNodeClone, firstNode);
+//     secondNodeParent.replaceChild(firstNodeClone, secondNode);
+
+//     return true;
+//   }
+// });
+
+// Another solution (improved over first)
+
+function nodeSwap(id1, id2) {
+  let element1 = document.getElementById(id1);
+  let element2 = document.getElementById(id2);
+
+  if (!element1 || !element2) return;
+
+  if (element1.contains(element2) || element2.contains(element1)) return;
+
+  let nextSibling1 = element1.nextElementSibling;
+  let nextSibling2 = element2.nextElementSibling;
+
+  let parent1 = element1.parentElement;
+  let parent2 = element2.parentElement;
+
+  if (!nextSibling1) {
+      parent1.append(element2);
+  } else {
+      parent1.insertBefore(element2, nextSibling1);
   }
-});
+
+  if (!nextSibling2) {
+      parent2.append(element1);
+  } else {
+      parent2.insertBefore(element1, nextSibling2);
+  }
+}
